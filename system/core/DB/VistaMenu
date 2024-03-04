@@ -1,0 +1,33 @@
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `db_dashboard`.`v_carga_menu` AS
+    (SELECT 
+        `a`.`user_nick` AS `login`,
+        `a`.`user_nombres` AS `nombres`,
+        `a`.`user_apellidos` AS `apellidos`,
+        `f`.`rol_id` AS `rol_id`,
+        `f`.`rol_name` AS `rol_nale`,
+        `e`.`id_menu` AS `id_menu`,
+        `e`.`nombre_menu` AS `nombre_menu`,
+        `e`.`icono` AS `icono`,
+        `g`.`id_sub_menu` AS `id_sub_menu`,
+        `g`.`nombre_sub_menu` AS `nombre_sub_menu`,
+        `g`.`url` AS `url`
+    FROM
+        ((((((`db_dashboard`.`table_user` `a`
+        JOIN `db_dashboard`.`table_user_rol` `b`)
+        JOIN `db_dashboard`.`table_roles_sub_menu` `c`)
+        JOIN `db_dashboard`.`table_menu_sub_menu` `d`)
+        JOIN `db_dashboard`.`table_menu` `e`)
+        JOIN `db_dashboard`.`table_roles` `f`)
+        JOIN `db_dashboard`.`table_sub_menu` `g`)
+    WHERE
+        ((`a`.`user_nick` = `b`.`user_nick`)
+            AND (`b`.`id_rol` = `f`.`rol_id`)
+            AND (`f`.`rol_id` = `c`.`id_rol`)
+            AND (`c`.`id_sub_menu` = `g`.`id_sub_menu`)
+            AND (`g`.`id_sub_menu` = `d`.`id_sub_menu`)
+            AND (`e`.`id_menu` = `d`.`id_menu`)
+            AND (`e`.`status` = 1)))
