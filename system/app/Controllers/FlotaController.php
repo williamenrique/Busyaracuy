@@ -1,5 +1,4 @@
 <?php
-
 class Flota extends Controllers{
 	public function __construct(){
 		session_start();
@@ -91,13 +90,6 @@ class Flota extends Controllers{
 	}
 	/****************************************
 	 * funcion de guardar nuevo rol
-	 * let intIdUnidad = document.querySelector('#idUnidad').value;
-		let srtIdUnidad = document.querySelector('#txtIdUnidad').value;
-		let srtMarcaUnidad = document.querySelector('#listMarcaUnidad').value;
-		let srtModelo = document.querySelector('#listModelo').value;
-		let srtFechaUnidad = document.querySelector('#txtFechaUnidad').value;
-		let srtCapacidad = document.querySelector('#txtCapacidad').value;
-		let srtTipoCombustible = document.querySelector('#txtTipoCombustible').value;
 	 ***************************************/
 	public function setUnidad(){
 		//almacenar los datos en variables
@@ -130,15 +122,50 @@ class Flota extends Controllers{
 		die();
 	}
 
+	/*********
+	 * //invocar la vista con views y usamos getView y pasamos parametros esta clase y la vista
+		//incluimos un arreglo que contendra toda la informacion que se enviara al home
+	 */
+	public function unidad_mant(){
+		$data['page_tag'] = "Dashboard - mantenimiento";
+		$data['page_title'] = "Pagina Principal";
+		$data['page_name'] = "unidad_mant";
+		$data['page_link'] = "mantenimiento";
+		$data['page_menu_open'] = "mant-menu";
+		$data['page_link_acitvo'] = "link-unidad_mant";
+		$data['page_functions'] = "function.flota.js";
+		$this->views->getViews($this, "unidad_mant", $data);
+	}
+	/*********
+	 * //invocar la vista con views y usamos getView y pasamos parametros esta clase y la vista
+		//incluimos un arreglo que contendra toda la informacion que se enviara al home
+	 */
+	public function ingresar_mant(){
+		$data['page_tag'] = "Dashboard - mantenimiento";
+		$data['page_title'] = "Pagina Principal";
+		$data['page_name'] = "ingresar_mant";
+		$data['page_link'] = "mantenimiento";
+		$data['page_menu_open'] = "mant-menu";
+		$data['page_link_acitvo'] = "link-ingresar_mant";
+		$data['page_functions'] = "function.mant.js";
+		$this->views->getViews($this, "ingresar_mant", $data);
+	}
 
-
-
-
-
-
-
-
-
+	/****************************************
+	 * funcion de listar todos los modelos de unidades
+	 ***************************************/
+	public function getSelectUnidad(){
+		$htmlOptions = "";
+		$arrData = $this->model->selectUnidad();
+		if(count($arrData) > 0){
+			$htmlOptions .= '<option selected>Seleccione Unidad</option>';
+			for ($i=0; $i < count($arrData); $i++) { 
+				$htmlOptions .= '<option value="'.$arrData[$i]['id_flota'].'">'.$arrData[$i]['id_unidad'].'</option>';
+			}
+		}
+		echo $htmlOptions;
+		die();
+	}
 	//prueba de insertar
 	public function insertar(){
 		$data = $this->model->setUser('Juan',25);

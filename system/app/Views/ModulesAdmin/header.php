@@ -38,12 +38,6 @@
 					</a>
 				</li>
 			</ul>
-
-
-	
-
-
-
 			<!-- Right navbar links -->
 			<ul class="navbar-nav ml-auto">
 				<!-- Messages Dropdown Menu -->
@@ -218,13 +212,38 @@
 						<li class="nav-item flota">
 							<a href="<?= base_url()?>flota" class="nav-link flota-link">
 								<i class="nav-icon fas fa-th"></i>
-								<p>
-									Flota
-									<span class="right badge badge-danger">New</span>
-								</p>
+								<p>Flota</p>
 							</a>
 						</li>
+						<li class="nav-item mant-menu ">
+							<a href="#" class="nav-link mantenimiento">
+								<i class="nav-icon fas fa-user"></i>
+								<p>Mantenimiento<i class="right fas fa-angle-left"></i></p>
+							</a>
+							<ul class="nav nav-treeview ">
+								<li class="nav-item link-ingresar_mant ingresar_mant">
+									<a href="<?= base_url()?>flota/ingresar_mant" class="nav-link ">
+										<i class="far fa-circle nav-icon"></i>
+										<p>Ingresar</p>
+									</a>
+								</li>
+								<li class="nav-item link-unidad_mant">
+									<a href="<?= base_url()?>" class="nav-link ">
+										<i class="far fa-circle nav-icon"></i>
+										<p>Und Mantenimiento</p>
+									</a>
+								</li>
+							</ul>
+						</li>
 
+
+
+						<li class="nav-item mantenimiento">
+							<a href="<?= base_url()?>flota/mantenimiento" class="nav-link mantenimiento-link">
+								<i class="nav-icon fas fa-th"></i>
+								<p>Item<span class="right badge badge-danger">New</span></p>
+							</a>
+						</li>
 					</ul>
 				</nav>
 				<!-- /.sidebar-menu -->

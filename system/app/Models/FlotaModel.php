@@ -25,6 +25,12 @@ class FlotaMOdel extends Mysql {
 		$request = $this->select_all($sql);
 		return $request;
 	}
+	//funcion para traer todos los roles
+	public function selectUnidad(){
+		$sql = "SELECT * FROM table_flota";
+		$request = $this->select_all($sql);
+		return $request;
+	}
 	/**********************
 	 * deshabilitar unidad
 	**********************/
