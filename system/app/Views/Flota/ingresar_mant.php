@@ -26,7 +26,7 @@
                 <!-- Default box -->
                 <div class="card ">
                     <div class="card-header">
-                        <form id="ing_mant_unidad">
+                        <form id="formIngMantUnidad">
                             <input type="hidden" name="idUnidad" id="idUnidad" value="">
                             <span id="title">Ingrese unidad a mantenimiento</span>
                             <div class="form-row align-items-center">
@@ -51,8 +51,8 @@
                                     <label class="sr-only" for="inlineFormInputName">Km</label>
                                     <input type="text" class="form-control" placeholder="Kilometraje" id="txtKilometraje" name="txtKilometraje">
                                 </div>
-                                <div class="col-auto my-1 statusRol form-check-inline">
-                                    <div class="form-check ml-2">
+                                <!-- <div class="col-auto my-1 statusRol form-check-inline">
+                                    <div class="form-check ml-1">
                                         <input class="form-check-input" type="radio" name="radioStatus" id="status2" value="2" checked>
                                         <label class="form-check-label" for="status2">Preventivo</label>
                                     </div>
@@ -60,30 +60,45 @@
                                         <input class="form-check-input" type="radio" name="radioStatus" id="status1" value="1">
                                         <label class="form-check-label" for="status1">Correctivo</label>
                                     </div>
+                                </div> -->
+                                <div class="col-sm-2 my-1">
+                                    <label class="sr-only" for="inlineFormInputName">Fecha entrada</label>
+                                    <input type="date" class="form-control" placeholder="Fecha entrada" id="txtFechaEntrada" name="txtFechaEntrada">
+                                </div>
+                                <div class="col-sm-2 my-1">
+                                    <label class="sr-only" for="inlineFormInputName">Hora entrada</label>
+                                    <input type="text" class="form-control" placeholder="Hora entrada" id="txtHoraEntrada" name="txtHoraEntrada">
                                 </div>
                                 <div class="col-sm-6 my-1">
                                     <label class="sr-only" for="inlineFormInputName">Diagnostico</label>
                                     <input type="text" class="form-control" placeholder="Diagnostico" id="txtDiagnostico" name="txtDiagnostico">
                                 </div>
-                                <div class="col-sm-6 my-1">
+                                <div class="col-sm-12 my-1">
                                     <label class="sr-only" for="inlineFormInputName">Recomendacion</label>
                                     <input type="text" class="form-control" placeholder="Recomendacion" id="txtRecomendacion" name="txtRecomendacion">
                                 </div>
+                               
                             </div>
+                            <button type="submit" id="btnActionForm" class="btn btn-primary btn-sm">
+                                </i><span id="btnText">Ingresar mantenimiento</span>
+                            </button>
                         </form>
                     </div>
                     <div class="card-body">
-                        <table class="table stripe hover nowrap table-sm" id="tableFlot" style="width: 100%;">
+                        <table class="table stripe hover nowrap table-sm" id="tableMantenimiento" style="width: 100%;">
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">MARCA</th>
-                                    <th scope="col">MODELO</th>
-                                    <th scope="col">VIM</th>
-                                    <th scope="col">FECHA</th>
-                                    <th scope="col">CAPACIDAD</th>
-                                    <th scope="col">TIPO</th>
-                                    <th scope="col">STATUS</th>
+                                    <th scope="col">ENTRADA</th>
+                                    <th scope="col">RUTA</th>
+                                    <th scope="col">OPERADOR</th>
+                                    <th scope="col">MECANICO</th>
+                                    <th scope="col">KM</th>
+                                    <th scope="col">TIPO MANTENIMIENTO</th>
+                                    <th scope="col">DIAGNOSTICO</th>
+                                    <th scope="col">RECOMENDACION</th>
+                                    <th scope="col">SALIDA</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>

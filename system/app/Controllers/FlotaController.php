@@ -89,7 +89,7 @@ class Flota extends Controllers{
 		die();
 	}
 	/****************************************
-	 * funcion de guardar nuevo rol
+	 * funcion de guardar unidad en flota
 	 ***************************************/
 	public function setUnidad(){
 		//almacenar los datos en variables
@@ -111,7 +111,6 @@ class Flota extends Controllers{
 					si es mayor a 0 indica que si se ejecuto el query 
 				**********************************************************************************/
 				$arrResponse = array('status'=> true,'msg' => 'Datos guardados correctamente'); 
-				
 			}else if($request_unidad == "exist"){
 				$arrResponse = array('status'=> false,'msg' => '¡Atención esa unidad ya existe.'); 
 			}else{
@@ -166,31 +165,53 @@ class Flota extends Controllers{
 		echo $htmlOptions;
 		die();
 	}
-	//prueba de insertar
-	public function insertar(){
-		$data = $this->model->setUser('Juan',25);
-		print_r($data);
+
+	/****************************************
+	 * funcion ingresar unidad a mantenimiento
+	 ***************************************/
+	public function setIMantenimiento(){
+		$intidUnidad = $_POST['idUnidad'];
+		$srtListUnidad = $_POST['listUnidad'];
+		$srtRutaUnidad = $_POST['txtRutaUnidad'];
+		$srtOperador = $_POST['txtOperador'];
+		$srtMecanico = $_POST['txtMecanico'];
+		$srtKilometraje = $_POST['txtKilometraje'];
+		$srtFechaEntrada = $_POST['txtFechaEntrada'];
+		$srtHoraEntrada = $_POST['txtHoraEntrada'];
+		$srtDiagnostico = $_POST['txtDiagnostico'];
+		$srtRecomendacion = $_POST['txtRecomendacion'];
+		if($srtListUnidad == "Seleccione Unidad" || $srtRutaUnidad == "" || $srtOperador == "" || $srtMecanico == "" || $srtKilometraje == "" || $srtFechaEntrada == "" || $srtHoraEntrada == "" || $srtDiagnostico == "" || $srtRecomendacion == ""){
+			$arrResponse = array('status'=> false,'msg' => 'Debe llenar los campos');
+		}else{
+			$request_ingreso = $this->model->setIMantenimiento($srtListUnidad,$srtRutaUnidad,$srtOperador,$srtMecanico,$srtKilometraje,$srtFechaEntrada,$srtHoraEntrada,$srtDiagnostico,$srtRecomendacion);
+			if($request_ingreso > 0 ){
+				$arrResponse = array('status'=> true,'msg' => 'Unidad en mantenimiento');
+			}else{
+				$arrResponse = array('status'=> false,'msg' => 'Ah ocurrido un error');
+			}
+		}
+		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		die();
 	}
 
-	//metodo ver usuario
-	public function verUsuario($id){
-		$data = $this->model->getUser($id);
-		print_r($data);
-	}
-	
-	//metodo actualizar usuario
-	public function actualizar(){
-		$data = $this->model->updateUser(1,"Enrique",38);
-		print_r($data);
-	}
-	//metodo ver usuarios
-	public function verUser(){
-		$data = $this->model->getUsers();
-		print_r($data);
-	}
-		public function deleteUser($id){
-		$data = $this->model->delUser($id);
-		print_r($data);
+	/****************************************
+	 * funcion obtener unidades en mantenimiento
+	 ***************************************/
+	public function listUnidadMantenimiento(){
+		$arrData = $this->model->selectFlotaMantenimiento();
+		//provar que trae el array
+		// dep($arrData[0]['rol_status']);exit();
+		//recorrer el arreglo para colocara el status
+		for ($i=0; $i < count($arrData) ; $i++) {
+			if ($arrData[$i]['tipo_mantenimiento'] == 1) {
+				$arrData[$i]['status_unidad'] = '<span></a>';
+			}else {
+				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-warning" onClick="fntStatus(1,'.$arrData[$i]['id_flota'].')">Inoperativo</a>';
+			}
+		}
+		//convertir el arreglo de datos en un formato json
+		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
+		die();
 	}
 
 }
