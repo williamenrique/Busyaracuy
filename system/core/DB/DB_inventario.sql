@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-03-2024 a las 20:52:21
+-- Tiempo de generación: 07-03-2024 a las 21:09:44
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 7.4.33
 
@@ -343,7 +343,9 @@ INSERT INTO `table_timeline` (`time_id`, `time_idUser`, `time_codigo`, `time_fec
 (8, 1, 'biCod-1-e7IO', '2024-03-05', '3:13 pm', '3:14 pm'),
 (9, 1, 'biCod-1-2Nwa', '2024-03-05', '3:14 pm', NULL),
 (10, 1, 'biCod-1-xOuG', '2024-03-05', '4:34 pm', '4:34 pm'),
-(11, 1, 'biCod-1-VOwa', '2024-03-06', '2:05 pm', NULL);
+(11, 1, 'biCod-1-VOwa', '2024-03-06', '2:05 pm', NULL),
+(12, 1, 'biCod-1-1QTb', '2024-03-07', '2:05 pm', NULL),
+(13, 1, 'biCod-1-1J7v', '2024-03-07', '3:51 pm', NULL);
 
 -- --------------------------------------------------------
 
@@ -362,8 +364,18 @@ CREATE TABLE `table_unidad_mantenimiento` (
   `diagnostico` text NOT NULL,
   `recomendacion` text NOT NULL,
   `fecha_entrada` varchar(25) NOT NULL,
-  `fecha_salida` varchar(25) NOT NULL
+  `fecha_salida` varchar(25) NOT NULL,
+  `status_mantenimiento` char(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `table_unidad_mantenimiento`
+--
+
+INSERT INTO `table_unidad_mantenimiento` (`id_unidad_mantenimiento`, `id_flota`, `ruta_unidad`, `operardor_unidad`, `nomb_mecanico`, `km_unidad`, `tipo_mantenimiento`, `diagnostico`, `recomendacion`, `fecha_entrada`, `fecha_salida`, `status_mantenimiento`) VALUES
+(2, 4, 'daewrf', 'esfes', 'fesf', 'sef', 'c', '2024-02-29', 'sefd', 'sdfsd', 'sfe', '1'),
+(3, 28, 'reyhrt', 'thdth', 'hdfh', 'dfhfdhfg', 'c', '2024-03-22', 'fghfd', 'hfdgh', 'rdgdg', '1'),
+(4, 3, 'dsfsd', 'gfdsgdg', 'dfgdf', 'dfhgdfh', 'c', '2024-03-26', 'gdfgbdf', 'dgf', 'fgdg', '1');
 
 -- --------------------------------------------------------
 
@@ -489,13 +501,13 @@ ALTER TABLE `table_flota`
 -- AUTO_INCREMENT de la tabla `table_timeline`
 --
 ALTER TABLE `table_timeline`
-  MODIFY `time_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `time_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `table_unidad_mantenimiento`
 --
 ALTER TABLE `table_unidad_mantenimiento`
-  MODIFY `id_unidad_mantenimiento` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_unidad_mantenimiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `table_user`
