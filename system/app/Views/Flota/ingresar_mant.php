@@ -51,16 +51,16 @@
                                     <label class="sr-only" for="inlineFormInputName">Km</label>
                                     <input type="text" class="form-control" placeholder="Kilometraje" id="txtKilometraje" name="txtKilometraje">
                                 </div>
-                                <!-- <div class="col-auto my-1 statusRol form-check-inline">
+                                <div class="col-auto statusRol form-check-inline">
                                     <div class="form-check ml-1">
-                                        <input class="form-check-input" type="radio" name="radioStatus" id="status2" value="2" checked>
-                                        <label class="form-check-label" for="status2">Preventivo</label>
+                                        <input class="form-check-input" type="radio" name="radioTipo" id="preventivo" value="p" checked>
+                                        <label class="form-check-label" for="preventivo">Preventivo</label>
                                     </div>
                                     <div class="form-check ml-2">
-                                        <input class="form-check-input" type="radio" name="radioStatus" id="status1" value="1">
-                                        <label class="form-check-label" for="status1">Correctivo</label>
+                                        <input class="form-check-input" type="radio" name="radioTipo" id="correctivo" value="c">
+                                        <label class="form-check-label" for="correctivo">Correctivo</label>
                                     </div>
-                                </div> -->
+                                </div>
                                 <div class="col-sm-2 my-1">
                                     <label class="sr-only" for="inlineFormInputName">Fecha entrada</label>
                                     <input type="date" class="form-control" placeholder="Fecha entrada" id="txtFechaEntrada" name="txtFechaEntrada">
@@ -73,11 +73,10 @@
                                     <label class="sr-only" for="inlineFormInputName">Diagnostico</label>
                                     <input type="text" class="form-control" placeholder="Diagnostico" id="txtDiagnostico" name="txtDiagnostico">
                                 </div>
-                                <div class="col-sm-12 my-1">
+                                <div class="col-sm-6 my-1">
                                     <label class="sr-only" for="inlineFormInputName">Recomendacion</label>
                                     <input type="text" class="form-control" placeholder="Recomendacion" id="txtRecomendacion" name="txtRecomendacion">
                                 </div>
-                               
                             </div>
                             <button type="submit" id="btnActionForm" class="btn btn-primary btn-sm">
                                 </i><span id="btnText">Ingresar mantenimiento</span>
@@ -90,15 +89,13 @@
                                 <tr>
                                     <th scope="col">ID</th>
                                     <th scope="col">ENTRADA</th>
-                                    <th scope="col">RUTA</th>
-                                    <th scope="col">OPERADOR</th>
                                     <th scope="col">MECANICO</th>
                                     <th scope="col">KM</th>
-                                    <th scope="col">TIPO MANTENIMIENTO</th>
+                                    <th scope="col">TIPO</th>
                                     <th scope="col">DIAGNOSTICO</th>
                                     <th scope="col">RECOMENDACION</th>
                                     <th scope="col">SALIDA</th>
-                                    
+                                    <th scope="col">OPCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>

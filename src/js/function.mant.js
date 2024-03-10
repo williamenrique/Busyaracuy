@@ -41,20 +41,19 @@ document.addEventListener('DOMContentLoaded', function () {
 			/*
 			`id_flota`, `ruta_unidad`, 
 			`operardor_unidad`, `nomb_mecanico`,
-			 `km_unidad`, `tipo_mantenimiento`, 
-			 `diagnostico`, `recomendacion`, `fecha_entrada`, 
-			 `fecha_salida`, `status_mantenimiento`
+			`km_unidad`, `tipo_mantenimiento`, 
+			`diagnostico`, `recomendacion`, `fecha_entrada`, 
+			`fecha_salida`, `status_mantenimiento`
 			*/
-			{ 'data': 'id_flota' },
+			{ 'data': 'id_unidad' },
 			{ 'data': 'fecha_entrada' },
-			{ 'data': 'ruta_unidad' },
-			{ 'data': 'operardor_unidad' },
 			{ 'data': 'nomb_mecanico' },
             { 'data': 'km_unidad' },
             { 'data': 'tipo_mantenimiento' },
             { 'data': 'diagnostico' },
 			{ 'data': 'recomendacion' },
-			{ 'data': 'fecha_salida' }
+			{ 'data': 'fecha_salida' },
+			{ 'data': 'opciones' }
 		],
 		"resonsieve": "true",
 		"bDestroy": true,
@@ -63,54 +62,93 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 
 	/***************INGRESAR UNIDAD EN MANTENIMIENTO ***************************/
-	let formIngMantUnidad = document.querySelector('#formIngMantUnidad');
-	formIngMantUnidad.onsubmit = function (e) {
-		e.preventDefault();
-		let intIdUnidad = document.querySelector('#listUnidad').value;
-		let srtRutaUnidad = document.querySelector('#txtRutaUnidad').value;
-		let srtOperador = document.querySelector('#txtOperador').value;
-		let srtMecanico = document.querySelector('#txtMecanico').value;
-		let srtKm = document.querySelector('#txtKilometraje').value;
-		let srtFechaEntrada = document.querySelector('#txtFechaEntrada').value;
-		let srtHoraEntrada = document.querySelector('#txtHoraEntrada').value;
-		let srtDisgnostico = document.querySelector('#txtDiagnostico').value;
-		let srtRecomendacion = document.querySelector('#txtRecomendacion').value;
-		//var radioOption = $('[name="radioStatus"]:checked').val();
-		//hacer una validacion para diferentes navegadores y crear el formato de lectura y hacemos la peticion mediante ajax
-		//usando un if reducido creamos un objeto del contenido en (request)
-		let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-		let ajaxUrl = base_url + 'Flota/setIMantenimiento';
-		//creamos un objeto del formulario con los datos haciendo referencia a formData
-		let formData = new FormData(formIngMantUnidad); 
-		//prepara los datos por ajax preparando el dom
-		request.open('POST', ajaxUrl, true);
-		//envio de datos del formulario que se almacena enla variable
-		request.send(formData);
-		//despues del envio retornamos una funcion con los datos
-		request.onreadystatechange = function () {
-			//validamos la respuesta del servidor al enviar los datos
-			if (request.readyState == 4 && request.status == 200) {
-				//obtener el json y convertirlo a un objeto en javascript
-				var objData = JSON.parse(request.responseText);
-				//condionamos la respuesta del array del controlador
-				if (objData.status) {
-					formIngMantUnidad.reset();
-					notifi(objData.msg, 'success');
-					//refrescamos el dataTable
-					let tableMantenimiento = $('#tableMantenimiento').DataTable();
-					//recargamos la tabla 
-					tableMantenimiento.ajax.reload(function () {
-						//cada vez que se haga una accion se recarga la tabla y los botones
-					});
-				} else {
-					notifi(objData.msg, 'error');
+	if(document.querySelector('#formIngMantUnidad')){
+		let formIngMantUnidad = document.querySelector('#formIngMantUnidad');
+		formIngMantUnidad.onsubmit = function (e) {
+			e.preventDefault();
+			let intIdUnidad = document.querySelector('#listUnidad').value;
+			let srtRutaUnidad = document.querySelector('#txtRutaUnidad').value;
+			let srtOperador = document.querySelector('#txtOperador').value;
+			let srtMecanico = document.querySelector('#txtMecanico').value;
+			let srtKm = document.querySelector('#txtKilometraje').value;
+			let srtFechaEntrada = document.querySelector('#txtFechaEntrada').value;
+			let srtHoraEntrada = document.querySelector('#txtHoraEntrada').value;
+			let srtDisgnostico = document.querySelector('#txtDiagnostico').value;
+			let srtRecomendacion = document.querySelector('#txtRecomendacion').value;
+			var radioOption = $('[name="radioTipo"]:checked').val();
+			//hacer una validacion para diferentes navegadores y crear el formato de lectura y hacemos la peticion mediante ajax
+			//usando un if reducido creamos un objeto del contenido en (request)
+			let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+			let ajaxUrl = base_url + 'Flota/setIMantenimiento';
+			//creamos un objeto del formulario con los datos haciendo referencia a formData
+			let formData = new FormData(formIngMantUnidad); 
+			//prepara los datos por ajax preparando el dom
+			request.open('POST', ajaxUrl, true);
+			//envio de datos del formulario que se almacena enla variable
+			request.send(formData);
+			//despues del envio retornamos una funcion con los datos
+			request.onreadystatechange = function () {
+				//validamos la respuesta del servidor al enviar los datos
+				if (request.readyState == 4 && request.status == 200) {
+					//obtener el json y convertirlo a un objeto en javascript
+					var objData = JSON.parse(request.responseText);
+					//condionamos la respuesta del array del controlador
+					if (objData.status) {
+						formIngMantUnidad.reset();
+						notifi(objData.msg, 'success');
+						//refrescamos el dataTable
+						let tableMantenimiento = $('#tableMantenimiento').DataTable();
+						//recargamos la tabla 
+						tableMantenimiento.ajax.reload(function () {
+							//cada vez que se haga una accion se recarga la tabla y los botones
+						});
+					} else {
+						notifi(objData.msg, 'error');
+					}
 				}
 			}
-		};
-	};
+		}
+	}
 })
+/***************VER UNIDAD EN MANTENIMIENTO ***************************/
+function fntViewUnidad() {
+	var idFlota =document.querySelector('#idUnidad').value;
+	//creamos el objeto para os navegadores
+	var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+	var ajaxUrl = base_url + "Flota/getUnidadMant/" + idFlota;
+	//abrimos la conexion y enviamos los parametros para la peticion
+	request.open("GET", ajaxUrl, true);
+	request.send();
+	request.onreadystatechange = function () {
+		//todo va bien 
+		if (request.readyState == 4 && request.status == 200) {
+			//creamos el objeto de los datos obtenidos del controlador
+			var objData = JSON.parse(request.responseText);
+			//evaluamos
+
+			if (objData.status) {
+				var estadoUser = objData.data.user_status == 1 ?
+				'<span class="badge badge-success">Activo</span>' :
+				'<span class="badge badge-warning">Inactivo</span>';
+				document.querySelector("#celIdentificacion").innerHTML = objData.data.user_ci ;
+				document.querySelector("#nickname").innerHTML = objData.data.user_nick ;
+				document.querySelector("#celNombres").innerHTML = objData.data.user_nombres ;
+				document.querySelector("#celApellidos").innerHTML = objData.data.user_apellidos ;
+				document.querySelector("#celEmail").innerHTML = objData.data.user_email ;
+				document.querySelector("#celEstado").innerHTML = estadoUser ;
+				document.querySelector("#celTelefono").innerHTML = objData.data.user_tlf ;
+				document.querySelector("#celTipoUsuario").innerHTML = objData.data.rol_name ;
+				document.querySelector("#celFechaReg").innerHTML = objData.data.fecha_reg ;
+				$("#modalViewUser").modal("show");
+			} else {
+				Swal.fire('error', objData.msg);
+			}
+		}
+	}
+}
 window.addEventListener('load', function () {
 	fntUnidad();
+	fntViewUnidad()
 },false)
 /*************************
  * funcion para obtener los modelos y cargarlos en los select

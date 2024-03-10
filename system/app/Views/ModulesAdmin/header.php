@@ -228,7 +228,7 @@
 									</a>
 								</li>
 								<li class="nav-item link-unidad_mant">
-									<a href="<?= base_url()?>" class="nav-link ">
+									<a href="<?= base_url()?>flota/unidad_mant" class="nav-link ">
 										<i class="far fa-circle nav-icon"></i>
 										<p>Und Mantenimiento</p>
 									</a>

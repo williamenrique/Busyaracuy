@@ -75,7 +75,7 @@ class FlotaModel extends Mysql {
 		}
 		return $return;
 	}
-	public function setIMantenimiento(int $srtListUnidad, string	$srtRutaUnidad, string $srtOperador, string $srtMecanico, string $srtKilometraje, string $srtFechaEntrada, string $srtHoraEntrada, string $srtDiagnostico, string $srtRecomendacion){
+	public function setIMantenimiento(int $srtListUnidad, string $srtRutaUnidad, string $srtOperador, string $srtMecanico, string $srtKilometraje,string $srtRadioTipo, string $srtFechaEntrada, string $srtHoraEntrada, string $srtDiagnostico, string $srtRecomendacion){
 		// $this->intidUnidad = $intidUnidad; 
 		$this->srtListUnidad = $srtListUnidad; 
 		$this->srtRutaUnidad = $srtRutaUnidad; 
@@ -86,12 +86,22 @@ class FlotaModel extends Mysql {
 		$this->srtHoraEntrada = $srtHoraEntrada; 
 		$this->srtDiagnostico = $srtDiagnostico; 
 		$this->srtRecomendacion = $srtRecomendacion;
+		$this->srtRadioTipo = $srtRadioTipo;
 		$sql_insert = "INSERT INTO table_unidad_mantenimiento(id_flota, ruta_unidad, operardor_unidad, nomb_mecanico, km_unidad, tipo_mantenimiento, diagnostico, recomendacion, fecha_entrada, fecha_salida, status_mantenimiento) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-		$arrData = array($this->srtListUnidad,$this->srtRutaUnidad,$this->srtOperador,$this->srtMecanico,$this->srtKilometraje,'c',$this->srtFechaEntrada,$this->srtHoraEntrada,$this->srtDiagnostico,$this->srtRecomendacion,'1');
+		$arrData = array($this->srtListUnidad,$this->srtRutaUnidad,$this->srtOperador,$this->srtMecanico,$this->srtKilometraje,$this->srtRadioTipo,$this->srtDiagnostico,$this->srtRecomendacion,$this->srtFechaEntrada.'/'.$this->srtHoraEntrada,'','1');
 		$request_insert = $this->insert($sql_insert,$arrData);//enviamos el query y el array de datos
 		return $request_insert;
 	}
 	public function selectFlotaMantenimiento(){
-		
+		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota;";
+		$request = $this->select_all($sql);
+		return $request;
+	}
+
+	public function selectUnidadM(int $idFlota){
+		$this->idFlota = $idFlota;
+		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE f.id_flota = $this->idFlota";
+		$request = $this->select_all($sql);
+		return $request;
 	}
 }

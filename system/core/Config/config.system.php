@@ -1,6 +1,6 @@
 <?php
 
-const BASE_URL = "http://192.168.1.200/";
+const BASE_URL = "http://192.168.0.200/busyaracuy/";
  // const BASE_URL = "http://inventario.lat/";
 const HEAD = "src/include/head.php";
 const FOOTER = "src/include/footer.php";
