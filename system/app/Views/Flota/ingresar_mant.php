@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="col-sm-3 my-1">
                                     <label class="sr-only" for="inlineFormInputName">Ruta de la unidad</label>
-                                    <input type="text" class="form-control" placeholder="Ruta de la unidad" id="txtRutaUnidad" name="txtRutaUnidad">
+                                    <input type="text" class="form-control" placeholder="Ruta de la unidad" id="txtRutaUnidad" name="txtRutaUnidad" onkeypress="return soloLetras(event);">
                                 </div>
                                 <div class="col-sm-3 my-1">
                                     <label class="sr-only" for="inlineFormInputName">Operador</label>

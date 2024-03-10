@@ -75,6 +75,9 @@ class FlotaModel extends Mysql {
 		}
 		return $return;
 	}
+	/**********************
+	 *  unidad mantenimiento
+	***********************/
 	public function setIMantenimiento(int $srtListUnidad, string $srtRutaUnidad, string $srtOperador, string $srtMecanico, string $srtKilometraje,string $srtRadioTipo, string $srtFechaEntrada, string $srtHoraEntrada, string $srtDiagnostico, string $srtRecomendacion){
 		// $this->intidUnidad = $intidUnidad; 
 		$this->srtListUnidad = $srtListUnidad; 
@@ -101,7 +104,7 @@ class FlotaModel extends Mysql {
 	public function selectUnidadM(int $idFlota){
 		$this->idFlota = $idFlota;
 		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE f.id_flota = $this->idFlota";
-		$request = $this->select_all($sql);
+		$request = $this->select($sql);
 		return $request;
 	}
 }

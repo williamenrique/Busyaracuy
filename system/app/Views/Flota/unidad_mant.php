@@ -25,11 +25,38 @@
                 <!-- Default box -->
                 <div class="card ">
                     <div class="card-header">
-                        <input type="hidden" id="idUnidad" value= "<?php echo $_GET['unidad']?>">
-                        
+                        <?php
+                        if(empty($_GET['unidad'])){?>
+                            <span>esta vacio seleccione uno</span>
+                            <div class="form-row align-items-center">
+                                <div class="col-sm-2 my-1">
+                                    <select id="listUndMant" data-live-search="true" name="listUndMant" class="form-control"
+                                        data-style="btn-outline-primary" data-size="5">
+                                    </select>
+                                </div>
+                            </div>
+                        <?php
+                        }else{
+                        ?>
+                        <input type="hidden" id="idUnidadM" value= "<?php echo $_GET['unidad']?>">
                     </div>
                     <div class="card-body">
+                        <form id="formUndMant">
+                            <div class="form-row align-items-center">
+                                <div class="col-sm-2 my-1">
+                                    <label class="" for="inlineFormInputName">ID UNIDAD</label>
+                                    <input type="text" class="form-control" disabled placeholder="Ruta de la unidad" id="txtIdFlota" name="txtIdFlota">
+                                </div>
+                                <div class="col-sm-3 my-1">
+                                    <label class="" for="inlineFormInputName">Ruta de la unidad</label>
+                                    <input type="text" class="form-control" placeholder="Ruta de la unidad" id="txtRutaUnidad" name="txtRutaUnidad">
+                                </div>
+                            </div>
+                        </form>
                     </div>
+                    <?php
+                        };
+                    ?>
                 </div>
                 <!-- /.card -->
             </div>

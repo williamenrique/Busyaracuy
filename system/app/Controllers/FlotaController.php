@@ -135,6 +135,7 @@ class Flota extends Controllers{
 		$data['page_functions'] = "function.mant.js";
 		$this->views->getViews($this, "unidad_mant", $data);
 	}
+	//traer unidad en mantenimiento
 	public function getUnidadMant(int $idFlota){
 		$idFlota = intval($idFlota);
 		if($idFlota > 0){
@@ -142,10 +143,24 @@ class Flota extends Controllers{
 			if(empty($arrData)){
 				$arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
 			}else{
-				$arrResponse = array('status' => true, 'msg' => 'Unidad enmantenimiento');
+				$arrResponse = array('status' => true, 'data' => $arrData);
 			}
 				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		}
+		die();
+	}
+	/****************************************
+	 * funcion de listar toda la flota en mantenimiento
+	 ***************************************/
+	public function getFlotaMantenimiento(){
+		$htmlOptions = "";
+		$arrData = $this->model->selectFlotaMantenimiento();
+		if(count($arrData) > 0){
+			for ($i=0; $i < count($arrData); $i++) { 
+				$htmlOptions .= '<option value="'.$arrData[$i]['id_flota'].'">'.$arrData[$i]['modelo_unidad'].'</option>';
+			}
+		}
+		echo $htmlOptions;
 		die();
 	}
 	/*********
