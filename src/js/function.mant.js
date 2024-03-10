@@ -112,36 +112,43 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 /***************VER UNIDAD EN MANTENIMIENTO ***************************/
 function fntViewUnidad() {
-	var idFlota =document.querySelector('#idUnidad').value;
-	//creamos el objeto para os navegadores
-	var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-	var ajaxUrl = base_url + "Flota/getUnidadMant/" + idFlota;
-	//abrimos la conexion y enviamos los parametros para la peticion
-	request.open("GET", ajaxUrl, true);
-	request.send();
-	request.onreadystatechange = function () {
-		//todo va bien 
-		if (request.readyState == 4 && request.status == 200) {
-			//creamos el objeto de los datos obtenidos del controlador
-			var objData = JSON.parse(request.responseText);
-			//evaluamos
-
-			if (objData.status) {
-				var estadoUser = objData.data.user_status == 1 ?
-				'<span class="badge badge-success">Activo</span>' :
-				'<span class="badge badge-warning">Inactivo</span>';
-				document.querySelector("#celIdentificacion").innerHTML = objData.data.user_ci ;
-				document.querySelector("#nickname").innerHTML = objData.data.user_nick ;
-				document.querySelector("#celNombres").innerHTML = objData.data.user_nombres ;
-				document.querySelector("#celApellidos").innerHTML = objData.data.user_apellidos ;
-				document.querySelector("#celEmail").innerHTML = objData.data.user_email ;
-				document.querySelector("#celEstado").innerHTML = estadoUser ;
-				document.querySelector("#celTelefono").innerHTML = objData.data.user_tlf ;
-				document.querySelector("#celTipoUsuario").innerHTML = objData.data.rol_name ;
-				document.querySelector("#celFechaReg").innerHTML = objData.data.fecha_reg ;
-				$("#modalViewUser").modal("show");
-			} else {
-				Swal.fire('error', objData.msg);
+	if(document.querySelector('#idUnidadM')){
+		
+		//obtener los datos de la unidad en mantenimiento
+		var idFlota = document.querySelector('#idUnidadM').value;
+		//creamos el objeto para os navegadores
+		var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+		var ajaxUrl = base_url + "Flota/getUnidadMant/" + idFlota;
+		//abrimos la conexion y enviamos los parametros para la peticion
+		request.open("GET", ajaxUrl, true);
+		request.send();
+		request.onreadystatechange = function () {
+			//todo va bien 
+			if (request.readyState == 4 && request.status == 200) {
+				//creamos el objeto de los datos obtenidos del controlador
+				var objData = JSON.parse(request.responseText);
+				//evaluamos
+				if (objData.status) {
+					document.querySelector("#txtIdFlota").value = objData.data.id_unidad ;
+				} else {
+					Swal.fire('error', objData.msg);
+				}
+			}
+		}
+	}else{
+		//listar unidades en mantenimiento
+		let ajaxUrl = base_url + "Flota/getFlotaMantenimiento";
+		//creamos el objeto para os navegadores
+		var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+		//abrimos la conexion y enviamos los parametros para la peticion
+		request.open("GET", ajaxUrl, true);
+		request.send();
+		request.onreadystatechange = function () {
+			if (request.readyState == 4 && request.status == 200) {
+				//option obtenidos del controlador
+				document.querySelector('#listUndMant').innerHTML = request.responseText;
+				//seleccionando el primer option
+				$("#listUndMant").selectpicker('render');
 			}
 		}
 	}
