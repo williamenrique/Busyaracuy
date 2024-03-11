@@ -142,10 +142,11 @@ class Flota extends Controllers{
 		$this->views->getViews($this, "unidad_mant", $data);
 	}
 	/************funcion traer unidad en mantenimiento al activar el select para historial********************/
+	/*revisar cuando veo una unidad en mantenimiento*/
 	public function getUnidadMant(int $idFlota){
 		$idFlota = intval($idFlota);
 		if($idFlota > 0){
-			$arrData = $this->model->selectUnidadM($idFlota);
+			$arrData = $this->model->selectUnidadHM($idFlota);
 			if(empty($arrData)){
 				$arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
 			}else{
@@ -251,7 +252,7 @@ class Flota extends Controllers{
 		if(count($arrData) > 0){
 			$htmlOptions .= '<option selected>Seleccione Unidad</option>';
 			for ($i=0; $i < count($arrData); $i++) { 
-				$htmlOptions .= '<option value="'.$arrData[$i]['id_flota'].'">'.$arrData[$i]['modelo_unidad'].'</option>';
+				$htmlOptions .= '<option value="'.$arrData[$i]['id_flota'].'">'.$arrData[$i]['id_unidad'].'</option>';
 			}
 		}else{
 			$htmlOptions .= '<option value="0">No hay unidades</option>';
