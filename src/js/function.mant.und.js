@@ -146,40 +146,18 @@ function fntViewUnidad() {
 	}
 }
 window.addEventListener('load', function () {
-	fntUnidad()
+	fntUnidad();
+	fntViewUnidad()
+	
 },false)
-/*************************
- * obtener valor del selec y cargar informacion de la unidad
- ************************/
 let select = document.querySelector('#listUnidad')
 select.addEventListener('change',
 function(){
-	var id_unidad = this.options[select.selectedIndex];
-	// alert(selectedOption.value + ': ' + selectedOption.text);
-	//listar unidades en mantenimiento
-	let ajaxUrl = base_url + "Flota/getUnidadPMant/ " + id_unidad.value
-	//creamos el objeto para os navegadores
-	var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-	//abrimos la conexion y enviamos los parametros para la peticion
-	request.open("POST", ajaxUrl, true);
-	request.send();
-	request.onreadystatechange = function () {
-		//todo va bien 
-		if (request.readyState == 4 && request.status == 200) {
-			//creamos el objeto de los datos obtenidos del controlador
-			var objData = JSON.parse(request.responseText);
-			//evaluamos
-			if (objData.status) {
-				document.querySelector("#txtRutaUnidad").value = objData.data.id_unidad ;
-			} else {
-				Swal.fire('error', objData.msg);
-			}
-		}
-	}
-
+	var selectedOption = this.options[select.selectedIndex];
+	alert(selectedOption.value + ': ' + selectedOption.text);
 });
 /*************************
- * funcion para listar las unidades y cargarlos en los select
+ * funcion para obtener los modelos y cargarlos en los select
  ************************/
 function fntUnidad() {
 	if (document.querySelector('#listUnidad')) {

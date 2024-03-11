@@ -131,7 +131,95 @@ function fntModelos() {
 /***
  * funcion cambiar el estado de la unidad
  */
-function fntStatus(status,idUnidad) {
+function fntStatus(status,idUnidad){
+	//obtenemos el valor del atributo individual
+	var status = status;
+	(async () => {
+		/* inputOptions can be an object or Promise */
+		const inputOptions = new Promise((resolve) => {
+			setTimeout(() => {
+			resolve({
+				'0': 'Desincorporado',
+				'1' : 'Operativo',
+				'2': 'Inoperativo',
+				'3': 'Mantenimiento',
+				'4': 'A desincorporar'
+			})
+			}, 1000)
+		})
+		const { value: status } = await Swal.fire({
+			title: 'Estas seguro de cambiar el estado de la unidad?',
+			input: 'radio',
+			inputOptions: inputOptions,
+			inputValidator: (value) => {
+			if (!value) {
+				return 'You need to choose something!'
+			}
+			}
+		})
+		if (status) {
+			//hacer una validacion para diferentes navegadores y crear el formato de lectura y hacemos la peticion mediante ajax
+			let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+			let ajaxUrl = base_url + 'Flota/statusUnidad/';
+			//id del atributo lr que obtuvimos enla variable
+			// let strData = [{"status" :status,"idUnidad": idUnidad}];
+			let strData = new URLSearchParams("idUnidad="+idUnidad+"&status="+status);
+			request.open("POST", ajaxUrl, true);
+			//forma en como se enviara
+			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			//enviamos
+			request.send(strData);
+			// request.send();
+			request.onreadystatechange = function () {
+				//comprobamos la peticion
+				if (request.readyState == 4 && request.status == 200) {
+					//convertir en objeto JSON
+					let objData = JSON.parse(request.responseText);
+					if (objData.status) {
+						if (objData.estado == 1) {
+							$(function () {
+								var Toast = Swal.mixin({
+									toast: true,
+									position: 'top-end',
+									showConfirmButton: false,
+									timer: 3000
+								})
+								Toast.fire({
+									icon: 'success',
+									title: objData.msg
+								})
+							})
+						} else {
+							$(function () {
+								var Toast = Swal.mixin({
+									toast: true,
+									position: 'top-end',
+									showConfirmButton: false,
+									timer: 3000
+								})
+								Toast.fire({
+									icon: 'success',
+									title: objData.msg
+								})
+							})
+						}
+						//Swal.fire('Proceso Exitoso!', objData.msg, 'success');
+						// let tableRoles = $('#tableRol').DataTable();
+						tableFlota.ajax.reload();
+					} else {
+						Swal.fire('Atencion!', objData.msg, 'error');
+					}
+				}
+			}
+		}
+	})()
+}
+
+
+
+
+
+function fntStatu(status,idUnidad) {
 	//obtenemos el valor del atributo individual
 	var status = status;
 	Swal.fire({

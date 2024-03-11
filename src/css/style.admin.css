@@ -6,6 +6,10 @@
 	background-color: #007bff;
     color: #fff;
 } */
+.swal2-radio {
+	display: grid !important;
+  text-align: left !important;
+}
 @font-face {
   font-family: 'Poppins';
   /* Antes de descargar el archivo, le decimos al buscador

@@ -29,11 +29,22 @@ class Flota extends Controllers{
 		// dep($arrData[0]['rol_status']);exit();
 		//recorrer el arreglo para colocara el status
 		for ($i=0; $i < count($arrData) ; $i++) {
+			if ($arrData[$i]['status_unidad'] == 0) {
+				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-danger" onClick="fntStatus(0,'.$arrData[$i]['id_flota'].')">Desincorporado</a>';
+			}
 			if ($arrData[$i]['status_unidad'] == 1) {
-				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-info" onClick="fntStatus(0,'.$arrData[$i]['id_flota'].')">Operativo</a>';
-			}else {
+				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-success" onClick="fntStatus(1,'.$arrData[$i]['id_flota'].')">Operativo</a>';
+			}
+			if ($arrData[$i]['status_unidad'] == 2) {
 				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-warning" onClick="fntStatus(1,'.$arrData[$i]['id_flota'].')">Inoperativo</a>';
 			}
+			if ($arrData[$i]['status_unidad'] == 3) {
+				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-info" onClick="fntStatus(1,'.$arrData[$i]['id_flota'].')">Mantenimiento</a>';
+			}
+			if ($arrData[$i]['status_unidad'] == 4) {
+				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-warning" onClick="fntStatus(1,'.$arrData[$i]['id_flota'].')">A desincorporar</a>';
+			}
+			$arrData[$i]['id_unidad'] ='<a href=flota/unidad_mant/?unidad='.$arrData[$i]['id_flota'].' title="Ver">'.$arrData[$i]['id_unidad'].'</a>';
 		}
 		//convertir el arreglo de datos en un formato json
 		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
@@ -76,11 +87,17 @@ class Flota extends Controllers{
 			$idUnidad = intval($_POST['idUnidad']);
 			$requestStatus = $this->model->statusUnidad($idUnidad,$status);
 			if($requestStatus){
-				if($requestStatus == 1){
-				$arrResponse = array('status' => true, 'msg' => 'Unidad Operativa', 'estado' => 1);
-			}else if($requestStatus == 2){
-				$arrResponse = array('status' => true, 'msg' => 'Unidad Desincorporada','estado' => 0);
-			}
+				if($requestStatus == 0){
+				$arrResponse = array('status' => true, 'msg' => 'Unidad Desincorporada', 'estado' => 0);
+				}else if($requestStatus == 1){
+					$arrResponse = array('status' => true, 'msg' => 'Unidad Operativa','estado' => 1);
+				}else if($requestStatus == 2){
+					$arrResponse = array('status' => true, 'msg' => 'Unidad Inoperativa','estado' => 2);
+				}else if($requestStatus == 3){
+					$arrResponse = array('status' => true, 'msg' => 'Unidad a desincorporar','estado' => 3);
+				}else if($requestStatus == 4){
+					$arrResponse = array('status' => true, 'msg' => 'Unidad Mantenimiento','estado' => 4);
+				}
 			}else{
 				$arrResponse = array('status' => false, 'msg' => 'Error al cambiar status');
 			}
@@ -120,7 +137,6 @@ class Flota extends Controllers{
 		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
-
 	/*********
 	 * //invocar la vista con views y usamos getView y pasamos parametros esta clase y la vista
 		//incluimos un arreglo que contendra toda la informacion que se enviara al home
@@ -132,10 +148,10 @@ class Flota extends Controllers{
 		$data['page_link'] = "mantenimiento";
 		$data['page_menu_open'] = "mant-menu";
 		$data['page_link_acitvo'] = "link-unidad_mant";
-		$data['page_functions'] = "function.mant.js";
+		$data['page_functions'] = "function.mant.und.js";
 		$this->views->getViews($this, "unidad_mant", $data);
 	}
-	//traer unidad en mantenimiento
+	//funcion traer unidad en mantenimiento
 	public function getUnidadMant(int $idFlota){
 		$idFlota = intval($idFlota);
 		if($idFlota > 0){
@@ -159,6 +175,8 @@ class Flota extends Controllers{
 			for ($i=0; $i < count($arrData); $i++) { 
 				$htmlOptions .= '<option value="'.$arrData[$i]['id_flota'].'">'.$arrData[$i]['modelo_unidad'].'</option>';
 			}
+		}else{
+			$htmlOptions .= '<option value="0">No hay unidades</option>';
 		}
 		echo $htmlOptions;
 		die();
@@ -177,7 +195,20 @@ class Flota extends Controllers{
 		$data['page_functions'] = "function.mant.js";
 		$this->views->getViews($this, "ingresar_mant", $data);
 	}
-	
+	//funcion traer unidad en mantenimiento
+	public function getUnidadPMant(int $idFlota){
+		$idFlota = intval($idFlota);
+		if($idFlota > 0){
+			$arrData = $this->model->selectUnidadID($idFlota);
+			if(empty($arrData)){
+				$arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+			}else{
+				$arrResponse = array('status' => true, 'data' => $arrData);
+			}
+				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+		die();
+	}
 	/****************************************
 	 * funcion de listar todos los modelos de unidades
 	 ***************************************/
@@ -221,7 +252,6 @@ class Flota extends Controllers{
 		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
-
 	/****************************************
 	 * funcion obtener unidades en mantenimiento
 	 ***************************************/

@@ -25,7 +25,7 @@ class FlotaModel extends Mysql {
 		$request = $this->select_all($sql);
 		return $request;
 	}
-	//funcion para traer todos los roles
+	//funcion para traer todas las unidades
 	public function selectUnidad(){
 		$sql = "SELECT * FROM table_flota";
 		$request = $this->select_all($sql);
@@ -96,7 +96,7 @@ class FlotaModel extends Mysql {
 		return $request_insert;
 	}
 	public function selectFlotaMantenimiento(){
-		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota;";
+		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE um.status_mantenimiento = 1";
 		$request = $this->select_all($sql);
 		return $request;
 	}
@@ -104,6 +104,13 @@ class FlotaModel extends Mysql {
 	public function selectUnidadM(int $idFlota){
 		$this->idFlota = $idFlota;
 		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE f.id_flota = $this->idFlota";
+		$request = $this->select($sql);
+		return $request;
+	}
+	/*obtener una unidad*/
+	public function selectUnidadID(int $idFlota){
+		$this->idFlota = $idFlota;
+	echo	$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE f.id_flota = $this->idFlota";
 		$request = $this->select($sql);
 		return $request;
 	}
