@@ -20,11 +20,9 @@ class Flota extends Controllers{
 		$data['page_functions'] = "function.flota.js";
 		$this->views->getViews($this, "flota", $data);
 	}
-	/*******************funcion de listar todos las unidades****************/
+	/*******************funcion de listar todos las unidades para la tabla****************/
 	public function getFlota(){
 		$arrData = $this->model->selectFlota();
-		//provar que trae el array
-		// dep($arrData[0]['rol_status']);exit();
 		//recorrer el arreglo para colocara el status
 		for ($i=0; $i < count($arrData) ; $i++) {
 			if ($arrData[$i]['status_unidad'] == 0) {
@@ -127,6 +125,84 @@ class Flota extends Controllers{
 		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
+	
+	/*********
+	 * //invocar la vista con views y usamos getView y pasamos parametros esta clase y la vista
+		//incluimos un arreglo que contendra toda la informacion que se enviara al home
+	 */
+	public function ingresar_mant(){
+		$data['page_tag'] = "Dashboard - mantenimiento";
+		$data['page_title'] = "Pagina Principal";
+		$data['page_name'] = "ingresar_mant";
+		$data['page_link'] = "mantenimiento";
+		$data['page_menu_open'] = "mant-menu";
+		$data['page_link_acitvo'] = "link-ingresar_mant";
+		$data['page_functions'] = "function.mant.js";
+		$this->views->getViews($this, "ingresar_mant", $data);
+	}
+	/*********** funcion obtener unidades en mantenimiento*****************/
+	public function listUnidadMantenimiento(){
+		$arrData = $this->model->selectFlotaMantenimiento();
+		//provar que trae el array
+		// dep($arrData[0]['rol_status']);exit();
+		//recorrer el arreglo para colocara el status
+		for ($i=0; $i < count($arrData) ; $i++) {
+			if ($arrData[$i]['tipo_mantenimiento'] == 'c') {
+				$arrData[$i]['tipo_mantenimiento'] = '<span>Preventivo</a>';
+			}else {
+				$arrData[$i]['tipo_mantenimiento'] = '<span>Correctivo</span>';
+			}
+			if ($arrData[$i]['fecha_salida'] == '') {
+				$arrData[$i]['fecha_salida'] = '<span>En espera</a>';
+			}
+			$arrData[$i]['opciones'] ='<div class="">
+											<a href=unidad_mant/?unidad='.$arrData[$i]['id_flota'].' title="Ver"><i class="far fa-eye" aria-hidden="true"></i></a>
+											<button type="button" class="btn btn-danger btn-sm btnDelUnidad" onClick="fntDelUnidad('.$arrData[$i]['id_flota'].')" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></button>
+										</div>';
+		}
+		//convertir el arreglo de datos en un formato json
+		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
+		die();
+	}
+	/***************funcion ingresar unidad a mantenimiento*****************/
+	public function setIMantenimiento(){
+		$intidUnidad = $_POST['idUnidad'];
+		$srtListUnidad = $_POST['listUnidad'];
+		$srtRutaUnidad = $_POST['txtRutaUnidad'];
+		$srtOperador = $_POST['txtOperador'];
+		$srtMecanico = $_POST['txtMecanico'];
+		$srtKilometraje = $_POST['txtKilometraje'];
+		$srtFechaEntrada = $_POST['txtFechaEntrada'];
+		$srtHoraEntrada = $_POST['txtHoraEntrada'];
+		$srtDiagnostico = $_POST['txtDiagnostico'];
+		$srtRecomendacion = $_POST['txtRecomendacion'];
+		$srtRadioTipo = $_POST['radioTipo'];
+		if($srtListUnidad == "Seleccione Unidad" || $srtRutaUnidad == "" || $srtOperador == "" || $srtMecanico == "" || $srtKilometraje == "" || $srtFechaEntrada == "" || $srtHoraEntrada == "" || $srtDiagnostico == "" || $srtRecomendacion == ""){
+			$arrResponse = array('status'=> false,'msg' => 'Debe llenar los campos');
+		}else{
+			$request_ingreso = $this->model->setIMantenimiento($srtListUnidad,$srtRutaUnidad,$srtOperador,$srtMecanico,$srtKilometraje,$srtRadioTipo,$srtFechaEntrada,$srtHoraEntrada,$srtDiagnostico,$srtRecomendacion);
+			if($request_ingreso > 0 ){
+				$arrResponse = array('status'=> true,'msg' => 'Unidad en mantenimiento');
+			}else{
+				$arrResponse = array('status'=> false,'msg' => 'Ah ocurrido un error');
+			}
+		}
+		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		die();
+	}
+	/*************funcion de listar todos los modelos de unidades ******************/
+	public function getSelectUnidad(){
+		$htmlOptions = "";
+		$arrData = $this->model->selectUnidad();
+		if(count($arrData) > 0){
+			$htmlOptions .= '<option selected>Seleccione Unidad</option>';
+			for ($i=0; $i < count($arrData); $i++) { 
+				$htmlOptions .= '<option value="'.$arrData[$i]['id_flota'].'">'.$arrData[$i]['id_unidad'].'</option>';
+			}
+		}
+		echo $htmlOptions;
+		die();
+	}
 	/*********
 	 * //invocar la vista con views y usamos getView y pasamos parametros esta clase y la vista
 		//incluimos un arreglo que contendra toda la informacion que se enviara al home
@@ -159,22 +235,22 @@ class Flota extends Controllers{
 					}else{
 						$tipoMant  = '<span class="badge badge-info">PREVENTIVO</span>';
 					}
-					/*
-																												id_unidad
-																												id_unidad
-																												vim_unidad
-																												modelo_unidad
-																												ruta_unidad
-																												fecha_entrada
-																												operardor_unidad
-																												nomb_mecanico
-																												tipo_combustible
-																												km_unidad
-																												diagnostico
-																												recomendacion
-																												cap_pasajero
-																												fecha_creacion
-																												*/
+												/*
+													id_unidad
+													id_unidad
+													vim_unidad
+													modelo_unidad
+													ruta_unidad
+													fecha_entrada
+													operardor_unidad
+													nomb_mecanico
+													tipo_combustible
+													km_unidad
+													diagnostico
+													recomendacion
+													cap_pasajero
+													fecha_creacion
+													*/
 					
 					$htmlOptions .= '
 								<div class="card ">
@@ -260,82 +336,4 @@ class Flota extends Controllers{
 		echo $htmlOptions;
 		die();
 	}
-	/*********
-	 * //invocar la vista con views y usamos getView y pasamos parametros esta clase y la vista
-		//incluimos un arreglo que contendra toda la informacion que se enviara al home
-	 */
-	public function ingresar_mant(){
-		$data['page_tag'] = "Dashboard - mantenimiento";
-		$data['page_title'] = "Pagina Principal";
-		$data['page_name'] = "ingresar_mant";
-		$data['page_link'] = "mantenimiento";
-		$data['page_menu_open'] = "mant-menu";
-		$data['page_link_acitvo'] = "link-ingresar_mant";
-		$data['page_functions'] = "function.mant.js";
-		$this->views->getViews($this, "ingresar_mant", $data);
-	}
-	/*********** funcion obtener unidades en mantenimiento*****************/
-	public function listUnidadMantenimiento(){
-		$arrData = $this->model->selectFlotaMantenimiento();
-		//provar que trae el array
-		// dep($arrData[0]['rol_status']);exit();
-		//recorrer el arreglo para colocara el status
-		for ($i=0; $i < count($arrData) ; $i++) {
-			if ($arrData[$i]['tipo_mantenimiento'] == 'c') {
-				$arrData[$i]['tipo_mantenimiento'] = '<span>Preventivo</a>';
-			}else {
-				$arrData[$i]['tipo_mantenimiento'] = '<span>Correctivo</span>';
-			}
-			if ($arrData[$i]['fecha_salida'] == '') {
-				$arrData[$i]['fecha_salida'] = '<span>En espera</a>';
-			}
-			$arrData[$i]['opciones'] ='<div class="">
-											<a href=unidad_mant/?unidad='.$arrData[$i]['id_flota'].' title="Ver"><i class="far fa-eye" aria-hidden="true"></i></a>
-											<button type="button" class="btn btn-danger btn-sm btnDelUnidad" onClick="fntDelUnidad('.$arrData[$i]['id_flota'].')" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></button>
-										</div>';
-		}
-		//convertir el arreglo de datos en un formato json
-		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
-		die();
-	}
-	/***************funcion ingresar unidad a mantenimiento*****************/
-	public function setIMantenimiento(){
-		$intidUnidad = $_POST['idUnidad'];
-		$srtListUnidad = $_POST['listUnidad'];
-		$srtRutaUnidad = $_POST['txtRutaUnidad'];
-		$srtOperador = $_POST['txtOperador'];
-		$srtMecanico = $_POST['txtMecanico'];
-		$srtKilometraje = $_POST['txtKilometraje'];
-		$srtFechaEntrada = $_POST['txtFechaEntrada'];
-		$srtHoraEntrada = $_POST['txtHoraEntrada'];
-		$srtDiagnostico = $_POST['txtDiagnostico'];
-		$srtRecomendacion = $_POST['txtRecomendacion'];
-		$srtRadioTipo = $_POST['radioTipo'];
-		if($srtListUnidad == "Seleccione Unidad" || $srtRutaUnidad == "" || $srtOperador == "" || $srtMecanico == "" || $srtKilometraje == "" || $srtFechaEntrada == "" || $srtHoraEntrada == "" || $srtDiagnostico == "" || $srtRecomendacion == ""){
-			$arrResponse = array('status'=> false,'msg' => 'Debe llenar los campos');
-		}else{
-			$request_ingreso = $this->model->setIMantenimiento($srtListUnidad,$srtRutaUnidad,$srtOperador,$srtMecanico,$srtKilometraje,$srtRadioTipo,$srtFechaEntrada,$srtHoraEntrada,$srtDiagnostico,$srtRecomendacion);
-			if($request_ingreso > 0 ){
-				$arrResponse = array('status'=> true,'msg' => 'Unidad en mantenimiento');
-			}else{
-				$arrResponse = array('status'=> false,'msg' => 'Ah ocurrido un error');
-			}
-		}
-		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
-		die();
-	}
-	/*************funcion de listar todos los modelos de unidades ******************/
-	public function getSelectUnidad(){
-		$htmlOptions = "";
-		$arrData = $this->model->selectUnidad();
-		if(count($arrData) > 0){
-			$htmlOptions .= '<option selected>Seleccione Unidad</option>';
-			for ($i=0; $i < count($arrData); $i++) { 
-				$htmlOptions .= '<option value="'.$arrData[$i]['id_flota'].'">'.$arrData[$i]['id_unidad'].'</option>';
-			}
-		}
-		echo $htmlOptions;
-		die();
-	}
-	
 }
