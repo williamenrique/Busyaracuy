@@ -27,7 +27,7 @@ class FlotaModel extends Mysql {
 	}
 	//funcion para traer todas las unidades
 	public function selectUnidad(){
-		$sql = "SELECT * FROM table_flota";
+		$sql = "SELECT * FROM table_flota WHERE status_unidad != 0";
 		$request = $this->select_all($sql);
 		return $request;
 	}
@@ -95,22 +95,29 @@ class FlotaModel extends Mysql {
 		$request_insert = $this->insert($sql_insert,$arrData);//enviamos el query y el array de datos
 		return $request_insert;
 	}
+	/***************** listar las unidades en mantenimiento no repetidas***********************/
 	public function selectFlotaMantenimiento(){
 		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE um.status_mantenimiento = 1";
 		$request = $this->select_all($sql);
 		return $request;
 	}
-
+	/***************** listar las unidades en mantenimiento no repetidas***********************/
+	public function selectUnidadMantenimiento(){
+		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE um.status_mantenimiento = 1";
+		$request = $this->select_all($sql);
+		return $request;
+	}
+	/*****************traer historial de unidad en mantenimiento***********************/
 	public function selectUnidadM(int $idFlota){
 		$this->idFlota = $idFlota;
 		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE f.id_flota = $this->idFlota";
-		$request = $this->select($sql);
+		$request = $this->select_all($sql);
 		return $request;
 	}
-	/*obtener una unidad*/
+	/*obtener una unidad por id*/
 	public function selectUnidadID(int $idFlota){
 		$this->idFlota = $idFlota;
-	echo	$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE f.id_flota = $this->idFlota";
+		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE f.id_flota = $this->idFlota";
 		$request = $this->select($sql);
 		return $request;
 	}

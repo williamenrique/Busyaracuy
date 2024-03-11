@@ -103,84 +103,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 	}
 })
-/***************VER UNIDAD EN MANTENIMIENTO ***************************/
-function fntViewUnidad() {
-	if(document.querySelector('#idUnidadM')){
-		//obtener los datos de la unidad en mantenimiento
-		var idFlota = document.querySelector('#idUnidadM').value;
-		//creamos el objeto para os navegadores
-		var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-		var ajaxUrl = base_url + "Flota/getUnidadMant/" + idFlota;
-		//abrimos la conexion y enviamos los parametros para la peticion
-		request.open("GET", ajaxUrl, true);
-		request.send();
-		request.onreadystatechange = function () {
-			//todo va bien 
-			if (request.readyState == 4 && request.status == 200) {
-				//creamos el objeto de los datos obtenidos del controlador
-				var objData = JSON.parse(request.responseText);
-				//evaluamos
-				if (objData.status) {
-					document.querySelector("#txtIdFlota").value = objData.data.id_unidad ;
-				} else {
-					Swal.fire('error', objData.msg);
-				}
-			}
-		}
-	}else{
-		//listar unidades en mantenimiento
-		let ajaxUrl = base_url + "Flota/getFlotaMantenimiento";
-		//creamos el objeto para os navegadores
-		var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-		//abrimos la conexion y enviamos los parametros para la peticion
-		request.open("GET", ajaxUrl, true);
-		request.send();
-		request.onreadystatechange = function () {
-			if (request.readyState == 4 && request.status == 200) {
-				//option obtenidos del controlador
-				document.querySelector('#listUndMant').innerHTML = request.responseText;
-				//seleccionando el primer option
-				$("#listUndMant").selectpicker('render');
-			}
-		}
-	}
-}
+
 window.addEventListener('load', function () {
 	fntUnidad()
 },false)
-/*************************
- * obtener valor del selec y cargar informacion de la unidad
- ************************/
-let select = document.querySelector('#listUnidad')
-select.addEventListener('change',
-function(){
-	var id_unidad = this.options[select.selectedIndex];
-	// alert(selectedOption.value + ': ' + selectedOption.text);
-	//listar unidades en mantenimiento
-	let ajaxUrl = base_url + "Flota/getUnidadPMant/ " + id_unidad.value
-	//creamos el objeto para os navegadores
-	var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-	//abrimos la conexion y enviamos los parametros para la peticion
-	request.open("POST", ajaxUrl, true);
-	request.send();
-	request.onreadystatechange = function () {
-		//todo va bien 
-		if (request.readyState == 4 && request.status == 200) {
-			//creamos el objeto de los datos obtenidos del controlador
-			var objData = JSON.parse(request.responseText);
-			//evaluamos
-			if (objData.status) {
-				document.querySelector("#txtRutaUnidad").value = objData.data.id_unidad ;
-			} else {
-				Swal.fire('error', objData.msg);
-			}
-		}
-	}
-
-});
-/*************************
- * funcion para listar las unidades y cargarlos en los select
- ************************/
+/**********funcion para listar las unidades y cargarlos en los select***************/
 function fntUnidad() {
 	if (document.querySelector('#listUnidad')) {
 		let ajaxUrl = base_url + "Flota/getSelectUnidad";
@@ -199,75 +126,4 @@ function fntUnidad() {
 		}
 
 	}
-}
-/***
- * funcion cambiar el estado de la unidad
- */
-function fntStatus(status,idUnidad) {
-	//obtenemos el valor del atributo individual
-	var status = status;
-	Swal.fire({
-		title: 'Estas seguro de cambiar el estado del usuario?',
-		icon: 'info',
-		showCancelButton: true,
-		confirmButtonColor: 'btn btn-success',
-		cancelButtonColor: 'btn btn-danger',
-		confirmButtonText: 'Si, cambiar!'
-	}).then((result) => {
-		if (result.isConfirmed) {
-			//hacer una validacion para diferentes navegadores y crear el formato de lectura y hacemos la peticion mediante ajax
-			let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-			let ajaxUrl = base_url + 'Flota/statusUnidad/';
-			//id del atributo lr que obtuvimos enla variable
-			// let strData = [{"status" :status,"idUnidad": idUnidad}];
-			let strData = new URLSearchParams("idUnidad="+idUnidad+"&status="+status);
-			request.open("POST", ajaxUrl, true);
-			//forma en como se enviara
-			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			//enviamos
-			request.send(strData);
-			// request.send();
-			request.onreadystatechange = function () {
-				//comprobamos la peticion
-				if (request.readyState == 4 && request.status == 200) {
-					//convertir en objeto JSON
-					let objData = JSON.parse(request.responseText);
-					if (objData.status) {
-						if (objData.estado == 1) {
-							$(function () {
-								var Toast = Swal.mixin({
-									toast: true,
-									position: 'top-end',
-									showConfirmButton: false,
-									timer: 3000
-								})
-								Toast.fire({
-									icon: 'success',
-									title: objData.msg
-								})
-							})
-						} else {
-							$(function () {
-								var Toast = Swal.mixin({
-									toast: true,
-									position: 'top-end',
-									showConfirmButton: false,
-									timer: 3000
-								})
-								Toast.fire({
-									icon: 'success',
-									title: objData.msg
-								})
-							})
-						}
-						//Swal.fire('Proceso Exitoso!', objData.msg, 'success');
-						// let tableRoles = $('#tableRol').DataTable();
-						tableFlota.ajax.reload();
-					} else {
-						Swal.fire('Atencion!', objData.msg, 'error');
-					}
-				}
-			}
-		}
-	})
 }

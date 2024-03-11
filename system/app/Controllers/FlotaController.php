@@ -20,9 +20,7 @@ class Flota extends Controllers{
 		$data['page_functions'] = "function.flota.js";
 		$this->views->getViews($this, "flota", $data);
 	}
-	/****************************************
-	 * funcion de listar todos las unidades
-	 ***************************************/
+	/*******************funcion de listar todos las unidades****************/
 	public function getFlota(){
 		$arrData = $this->model->selectFlota();
 		//provar que trae el array
@@ -50,9 +48,7 @@ class Flota extends Controllers{
 		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
 		die();
 	}
-	/****************************************
-	 * funcion de listar todos las marcar de unidades
-	 ***************************************/
+	/************funcion de listar todos las marcar de unidades **************/
 	public function getSelectMarca(){
 		$htmlOptions = "";
 		$arrData = $this->model->selectMarca();
@@ -64,9 +60,7 @@ class Flota extends Controllers{
 		echo $htmlOptions;
 		die();
 	}
-	/****************************************
-	 * funcion de listar todos los modelos de unidades
-	 ***************************************/
+	/*************funcion de listar todos los modelos de unidades**************/
 	public function getSelectModelo(){
 		$htmlOptions = "";
 		$arrData = $this->model->selectModelos();
@@ -78,9 +72,7 @@ class Flota extends Controllers{
 		echo $htmlOptions;
 		die();
 	}
-	/***********************************
-	 * cambiar estado de la unidad
-	 */
+	/*************cambiar estado de la unidad***************/
 	public function statusUnidad(){
 		if($_POST){
 			$status = intval($_POST['status']);
@@ -105,9 +97,7 @@ class Flota extends Controllers{
 		}
 		die();
 	}
-	/****************************************
-	 * funcion de guardar unidad en flota
-	 ***************************************/
+	/************funcion de guardar unidad en flota********************/
 	public function setUnidad(){
 		//almacenar los datos en variables
 		$intIdUnidad = intVal($_POST['idUnidad']);
@@ -151,7 +141,7 @@ class Flota extends Controllers{
 		$data['page_functions'] = "function.mant.und.js";
 		$this->views->getViews($this, "unidad_mant", $data);
 	}
-	//funcion traer unidad en mantenimiento
+	/************funcion traer unidad en mantenimiento al activar el select para historial********************/
 	public function getUnidadMant(int $idFlota){
 		$idFlota = intval($idFlota);
 		if($idFlota > 0){
@@ -159,19 +149,107 @@ class Flota extends Controllers{
 			if(empty($arrData)){
 				$arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
 			}else{
-				$arrResponse = array('status' => true, 'data' => $arrData);
+				// $arrResponse = array('status' => true, 'data' => $arrData);
+				$htmlOptions = "";
+				$arrResponse = array('status' => true, 'msg' => 'historial');
+				for ($i=0; $i < count($arrData); $i++) {
+					if($arrData[$i]['tipo_mantenimiento'] == "c"){
+						$tipoMant = '<span class="badge badge-info">CORRECTIVO</span>';
+					}else{
+						$tipoMant  = '<span class="badge badge-info">PREVENTIVO</span>';
+					}
+					/*
+																												id_unidad
+																												id_unidad
+																												vim_unidad
+																												modelo_unidad
+																												ruta_unidad
+																												fecha_entrada
+																												operardor_unidad
+																												nomb_mecanico
+																												tipo_combustible
+																												km_unidad
+																												diagnostico
+																												recomendacion
+																												cap_pasajero
+																												fecha_creacion
+																												*/
+					
+					$htmlOptions .= '
+								<div class="card ">
+									<div class="card-header">
+										<h3 class="card-title mr-2 accent-light" > <span id="unidad">'.$arrData[$i]['id_unidad'].'</span></h3>
+										<h3 class="card-title mr-2 accent-light" > <span id="marca">'.$arrData[$i]['marca_unidad'].'</span>  </h3>
+										<h3 class="card-title mr-2" > <span id="modelo">'.$arrData[$i]['vim_unidad'].'</span>  </h3>
+										<h3 class="card-title mr-2" > <span id="vim">'.$arrData[$i]['modelo_unidad'].'</span></h3>
+									</div>
+									<div class="card-body">
+										<form id="formUndMant">
+											<div class="form-row align-items-center">
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">ENTRADA</label>
+													<input type="text" class="form-control" disabled value="'.$arrData[$i]['fecha_entrada'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">OPERADOR</label>
+													<input type="text" class="form-control" disabled value="'.$arrData[$i]['operardor_unidad'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">MECANICO</label>
+													<input type="text" class="form-control" disabled value="'.$arrData[$i]['nomb_mecanico'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">Combustible</label>
+													<input type="text" class="form-control" disabled value="'.$arrData[$i]['tipo_combustible'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">KM</label>
+													<input type="text" class="form-control" disabled value="'.$arrData[$i]['km_unidad'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">RUTA</label>
+													<input type="text" class="form-control" disabled value="'.$arrData[$i]['ruta_unidad'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">CAPACIDAD</label>
+													<input type="text" class="form-control" disabled value="'.$arrData[$i]['cap_pasajero'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">AÑO</label>
+													<input type="text" class="form-control" disabled value="'.$arrData[$i]['fecha_creacion'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName"></label>
+													'.$tipoMant.'
+												</div>
+												<div class="row">
+													<div class="col-sm-6 my-1">
+														<label class="" for="floatingTextarea2">Diagnostico</label>
+														<input type="text" class="form-control" disabled   value="'.$arrData[$i]['diagnostico'].'"></input>
+													</div>
+													<div class="col-sm-6 my-1">
+														<label class="" for="floatingTextarea2">Recomendacion</label>
+														<input type="text" class="form-control" disabled  value="'.$arrData[$i]['recomendacion'].'"></input>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+								';
+				}
 			}
-				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+			echo $htmlOptions;
+			die();
 		}
 		die();
 	}
-	/****************************************
-	 * funcion de listar toda la flota en mantenimiento
-	 ***************************************/
-	public function getFlotaMantenimiento(){
+	/************funcion de listar toda la flota en mantenimiento status 1 no repetidas en el select*********************/
+	public function selectUnidadMantenimiento(){
 		$htmlOptions = "";
 		$arrData = $this->model->selectFlotaMantenimiento();
 		if(count($arrData) > 0){
+			$htmlOptions .= '<option selected>Seleccione Unidad</option>';
 			for ($i=0; $i < count($arrData); $i++) { 
 				$htmlOptions .= '<option value="'.$arrData[$i]['id_flota'].'">'.$arrData[$i]['modelo_unidad'].'</option>';
 			}
@@ -195,38 +273,31 @@ class Flota extends Controllers{
 		$data['page_functions'] = "function.mant.js";
 		$this->views->getViews($this, "ingresar_mant", $data);
 	}
-	//funcion traer unidad en mantenimiento
-	public function getUnidadPMant(int $idFlota){
-		$idFlota = intval($idFlota);
-		if($idFlota > 0){
-			$arrData = $this->model->selectUnidadID($idFlota);
-			if(empty($arrData)){
-				$arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
-			}else{
-				$arrResponse = array('status' => true, 'data' => $arrData);
+	/*********** funcion obtener unidades en mantenimiento*****************/
+	public function listUnidadMantenimiento(){
+		$arrData = $this->model->selectFlotaMantenimiento();
+		//provar que trae el array
+		// dep($arrData[0]['rol_status']);exit();
+		//recorrer el arreglo para colocara el status
+		for ($i=0; $i < count($arrData) ; $i++) {
+			if ($arrData[$i]['tipo_mantenimiento'] == 'c') {
+				$arrData[$i]['tipo_mantenimiento'] = '<span>Preventivo</a>';
+			}else {
+				$arrData[$i]['tipo_mantenimiento'] = '<span>Correctivo</span>';
 			}
-				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+			if ($arrData[$i]['fecha_salida'] == '') {
+				$arrData[$i]['fecha_salida'] = '<span>En espera</a>';
+			}
+			$arrData[$i]['opciones'] ='<div class="">
+											<a href=unidad_mant/?unidad='.$arrData[$i]['id_flota'].' title="Ver"><i class="far fa-eye" aria-hidden="true"></i></a>
+											<button type="button" class="btn btn-danger btn-sm btnDelUnidad" onClick="fntDelUnidad('.$arrData[$i]['id_flota'].')" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></button>
+										</div>';
 		}
+		//convertir el arreglo de datos en un formato json
+		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
 		die();
 	}
-	/****************************************
-	 * funcion de listar todos los modelos de unidades
-	 ***************************************/
-	public function getSelectUnidad(){
-		$htmlOptions = "";
-		$arrData = $this->model->selectUnidad();
-		if(count($arrData) > 0){
-			$htmlOptions .= '<option selected>Seleccione Unidad</option>';
-			for ($i=0; $i < count($arrData); $i++) { 
-				$htmlOptions .= '<option value="'.$arrData[$i]['id_flota'].'">'.$arrData[$i]['id_unidad'].'</option>';
-			}
-		}
-		echo $htmlOptions;
-		die();
-	}
-	/****************************************
-	 * funcion ingresar unidad a mantenimiento
-	 ***************************************/
+	/***************funcion ingresar unidad a mantenimiento*****************/
 	public function setIMantenimiento(){
 		$intidUnidad = $_POST['idUnidad'];
 		$srtListUnidad = $_POST['listUnidad'];
@@ -252,31 +323,18 @@ class Flota extends Controllers{
 		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
-	/****************************************
-	 * funcion obtener unidades en mantenimiento
-	 ***************************************/
-	public function listUnidadMantenimiento(){
-		$arrData = $this->model->selectFlotaMantenimiento();
-		//provar que trae el array
-		// dep($arrData[0]['rol_status']);exit();
-		//recorrer el arreglo para colocara el status
-		for ($i=0; $i < count($arrData) ; $i++) {
-			if ($arrData[$i]['tipo_mantenimiento'] == 'c') {
-				$arrData[$i]['tipo_mantenimiento'] = '<span>Preventivo</a>';
-			}else {
-				$arrData[$i]['tipo_mantenimiento'] = '<span>Correctivo</span>';
+	/*************funcion de listar todos los modelos de unidades ******************/
+	public function getSelectUnidad(){
+		$htmlOptions = "";
+		$arrData = $this->model->selectUnidad();
+		if(count($arrData) > 0){
+			$htmlOptions .= '<option selected>Seleccione Unidad</option>';
+			for ($i=0; $i < count($arrData); $i++) { 
+				$htmlOptions .= '<option value="'.$arrData[$i]['id_flota'].'">'.$arrData[$i]['id_unidad'].'</option>';
 			}
-			if ($arrData[$i]['fecha_salida'] == '') {
-				$arrData[$i]['fecha_salida'] = '<span>En espera</a>';
-			}
-			$arrData[$i]['opciones'] ='<div class="">
-											<a href=unidad_mant/?unidad='.$arrData[$i]['id_flota'].' title="Ver"><i class="far fa-eye" aria-hidden="true"></i></a>
-											<button type="button" class="btn btn-danger btn-sm btnDelUnidad" onClick="fntDelUnidad('.$arrData[$i]['id_flota'].')" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></button>
-										</div>';
 		}
-		//convertir el arreglo de datos en un formato json
-		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
+		echo $htmlOptions;
 		die();
 	}
-
+	
 }
