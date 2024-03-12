@@ -27,7 +27,6 @@
             if(empty($_GET['unidad'])){?>
                 <div class="card">
                     <div class="card-header">
-                        <span>Seleccione una unidad</span>
                         <div class="form-row align-items-center">
                             <div class="col-sm-2 my-1">
                                 <select id="listUndMant" data-live-search="true" name="listUndMant" class="form-control"
@@ -39,20 +38,20 @@
                     </div>
                 </div>
 
-                <div class="div historial"></div>
+                <div class="historial"></div>
                 
-                    <?php
-                    }else{
-                    ?>
+            <?php
+            }else{
+            ?>
                 <div class="card ">
                     <div class="card-header">
                         <input type="hidden" id="idUnidadM" value= "<?php echo $_GET['unidad']?>">
-                    </div>
-                    <div class="card-body">
                         <h3 class="card-title accent-light" > <span id="unidad"></span></h3>
                         <h3 class="card-title accent-light" > <span id="marca"></span> - </h3>
                         <h3 class="card-title" > <span id="modelo"></span> - </h3>
                         <h3 class="card-title" > <span id="vim"></span></h3>
+                    </div>
+                    <div class="card-body">
                         <form id="formUndMant">
                             <div class="form-row align-items-center">
                                 <div class="col-sm-2 my-1">
@@ -91,16 +90,27 @@
                                     <label class="" for="inlineFormInputName"></label>
                                     <h4 id="tipoMant" class="my-2"></h5>
                                 </div>
+                                <div class="col-sm-2 my-1">
+                                    <label class="" for="inlineFormInputName">FECHA SALIDA</label>
+                                    <input type="date" class="form-control"  placeholder="" id="txtCreacion" name="txtCreacion">
+                                </div>
+                                <div class="col-sm-2 my-1">
+                                    <label class="" for="inlineFormInputName">HORA</label>
+                                    <input type="text" class="form-control"  placeholder="" id="txtHoraSalida" name="txtHoraSalida">
+                                </div>
                                 <div class="row">
-                                <div class="col-sm-6 my-1">
-                                    <label class="" for="floatingTextarea2">Diagnostico</label>
-                                    <textarea class="form-control" disabled placeholder="Diagnostico" style="height: 50%" id="txtDiagnostico" name="txtDiagnostico"></textarea>
+                                    <div class="col-sm-6 my-1">
+                                        <label class="" for="floatingTextarea2">Diagnostico</label>
+                                        <textarea class="form-control" disabled placeholder="Diagnostico" style="height: 50%" id="txtDiagnostico" name="txtDiagnostico"></textarea>
+                                    </div>
+                                    <div class="col-sm-6 my-1">
+                                        <label class="" for="floatingTextarea2">Recomendacion</label>
+                                        <textarea class="form-control" disabled placeholder="Recomendacion" style="height: 50%" id="txtRecomendacion" name="txtRecomendacion"></textarea>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6 my-1">
-                                    <label class="" for="floatingTextarea2">Recomendacion</label>
-                                    <textarea class="form-control" disabled placeholder="Recomendacion" style="height: 50%" id="txtRecomendacion" name="txtRecomendacion"></textarea>
-                                </div>
-                                </div>
+                                <button type="button" id="btnSalirMAnt" class="btn btn-primary btn-sm">
+                                    </i><span id="btnText">Salir mantenimiento</span>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -111,7 +121,6 @@
             </div>
             <!-- /.card -->
         </div>
-    </div>
-</section>
+    </section>
 <!-- /.content -->
 <?php footer_admin($data)?>

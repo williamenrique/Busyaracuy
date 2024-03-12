@@ -72,5 +72,5 @@ function notifi(data, icon) {
 
 window.onunload = unloadPage;
 function unloadPage(){
- alert("unload event detected!");
+	alert("unload event detected!");
 }

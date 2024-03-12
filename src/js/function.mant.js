@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
 window.addEventListener('load', function () {
 	fntUnidad()
 },false)
-/**********funcion para listar las unidades y cargarlos en los select***************/
+/***************funcion para listar las unidades y cargarlos en los select para ingresar unidad en mantenimiento ***************/
 function fntUnidad() {
 	if (document.querySelector('#listUnidad')) {
 		let ajaxUrl = base_url + "Flota/getSelectUnidad";
@@ -124,6 +124,5 @@ function fntUnidad() {
 				$("#listUnidad").selectpicker('render');
 			}
 		}
-
 	}
 }

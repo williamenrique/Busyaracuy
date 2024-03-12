@@ -12,28 +12,21 @@ class FlotaModel extends Mysql {
 	//heradar la clase padre 
 		parent::__construct();
 	}
-	//funcion para traer todos los flota
+	/************funcion para traer toda la flota****************/
 	public function selectFlota(){
 		#$sql = "SELECT * FROM table_flota WHERE status_unidad != 0";
 		$sql = "SELECT * FROM table_flota";
 		$request = $this->select_all($sql);
 		return $request;
 	}
-	//funcion para traer todos los roles
+	/************funcion para traer todos los modelos****************/
 	public function selectModelos(){
 		$sql = "SELECT * FROM table_modelo";
 		$request = $this->select_all($sql);
 		return $request;
 	}
-	//funcion para traer todas las unidades
-	public function selectUnidad(){
-		$sql = "SELECT * FROM table_flota WHERE status_unidad != 0";
-		$request = $this->select_all($sql);
-		return $request;
-	}
-	/**********************
-	 * deshabilitar unidad
-	**********************/
+	
+	/************deshabilitar unidad**********************/
 	public function statusUnidad(int $intIdUnidad, int $intStatus){
 		$this->intIdUnidad = $intIdUnidad;
 		$this->intStatus = $intStatus;
@@ -47,10 +40,7 @@ class FlotaModel extends Mysql {
 		}
 		return $request;
 	}
-	/**********************
-	 * crear unidad
-	***********************/
-	
+	/************crear unidad***********************/
 	public function insertUnidad(string $srtIdUnidad, string $srtMarcaUnidad, string $srtModelo, string $srtVim,string $srtFechaUnidad, int $srtCapacidad, string $srtTipoCombustible){
 		//asignamos las propiedades a las variable
 		$return = "";
@@ -75,9 +65,8 @@ class FlotaModel extends Mysql {
 		}
 		return $return;
 	}
-	/**********************
-	 *  unidad mantenimiento
-	***********************/
+	///////////////////////
+	/***************ingresar unidad mantenimiento***********************/
 	public function setIMantenimiento(int $srtListUnidad, string $srtRutaUnidad, string $srtOperador, string $srtMecanico, string $srtKilometraje,string $srtRadioTipo, string $srtFechaEntrada, string $srtHoraEntrada, string $srtDiagnostico, string $srtRecomendacion){
 		// $this->intidUnidad = $intidUnidad; 
 		$this->srtListUnidad = $srtListUnidad; 
@@ -95,13 +84,19 @@ class FlotaModel extends Mysql {
 		$request_insert = $this->insert($sql_insert,$arrData);//enviamos el query y el array de datos
 		return $request_insert;
 	}
-	/***************** listar las unidades en mantenimiento no repetidas***********************/
+	/************funcion para traer las unidades diferentes de status 0****************/
+	public function selectUnidad(){
+		$sql = "SELECT * FROM table_flota WHERE status_unidad != 0";
+		$request = $this->select_all($sql);
+		return $request;
+	}
+	/***************** listar las unidades en mantenimiento no repetidas ***********************/
 	public function selectFlotaMantenimiento(){
 		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE um.status_mantenimiento = 1";
 		$request = $this->select_all($sql);
 		return $request;
 	}
-	/***************** listar las unidades en mantenimiento no repetidas***********************/
+	/***************** listar las unidades en mantenimiento no repetidas para el select de buscar historial***********************/
 	public function selectUnidadMantenimiento(){
 		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE um.status_mantenimiento = 1";
 		$request = $this->select_all($sql);
@@ -114,8 +109,15 @@ class FlotaModel extends Mysql {
 		$request = $this->select_all($sql);
 		return $request;
 	}
-	/*obtener una unidad por id*/
-	public function selectUnidadID(int $idFlota){
+	/*****************traer unidad en mantenimiento***********************/
+	public function selectUnidadM(int $idFlota){
+		$this->idFlota = $idFlota;
+		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE f.id_flota = $this->idFlota AND um.status_mantenimiento = 1";
+		$request = $this->select($sql);
+		return $request;
+	}
+	/*obtener una unidad por id explorar esta sin uso*/
+	public function selectUnidadIDd(int $idFlota){
 		$this->idFlota = $idFlota;
 		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE f.id_flota = $this->idFlota";
 		$request = $this->select($sql);

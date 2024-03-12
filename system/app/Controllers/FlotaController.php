@@ -144,7 +144,7 @@ class Flota extends Controllers{
 	public function listUnidadMantenimiento(){
 		$arrData = $this->model->selectFlotaMantenimiento();
 		//provar que trae el array
-		// dep($arrData[0]['rol_status']);exit();
+		// dep($arrData[0]['id_unidad']);exit();
 		//recorrer el arreglo para colocara el status
 		for ($i=0; $i < count($arrData) ; $i++) {
 			if ($arrData[$i]['tipo_mantenimiento'] == 'c') {
@@ -218,8 +218,8 @@ class Flota extends Controllers{
 		$this->views->getViews($this, "unidad_mant", $data);
 	}
 	/************funcion traer unidad en mantenimiento al activar el select para historial********************/
-	/*revisar cuando veo una unidad en mantenimiento*/
-	public function getUnidadMant(int $idFlota){
+	/*************revisar cuando veo una unidad en mantenimiento*******************/
+	public function getUnidadMantH(int $idFlota){
 		$idFlota = intval($idFlota);
 		if($idFlota > 0){
 			$arrData = $this->model->selectUnidadHM($idFlota);
@@ -319,6 +319,20 @@ class Flota extends Controllers{
 			echo $htmlOptions;
 			die();
 		}
+		die();
+	}
+	/************funcion traer unidad en mantenimiento desde ver********************/
+	public function getUnidadMant(int $idUnidadM){
+		$idUnidadM = intval($idUnidadM);
+		if($idUnidadM > 0){
+			$arrData = $this->model->selectUnidadM($idUnidadM);
+			if(empty($arrData)){
+				$arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+			}else{
+				$arrResponse = array('status' => true, 'data' => $arrData);
+			}
+		}
+		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
 	/************funcion de listar toda la flota en mantenimiento status 1 no repetidas en el select*********************/

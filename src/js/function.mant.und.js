@@ -107,13 +107,13 @@ document.addEventListener('DOMContentLoaded', function () {
 function fntViewUnidad() {
 	if(document.querySelector('#idUnidadM')){
 		//obtener los datos de la unidad en mantenimiento
-		var idFlota = document.querySelector('#idUnidadM').value;
+		var idFlota = document.querySelector('#idUnidadM').value
 		//creamos el objeto para os navegadores
-		var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-		var ajaxUrl = base_url + "Flota/getUnidadMant/" + idFlota;
+		var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+		var ajaxUrl = base_url + "Flota/getUnidadMant/" + idFlota
 		//abrimos la conexion y enviamos los parametros para la peticion
-		request.open("GET", ajaxUrl, true);
-		request.send();
+		request.open("GET", ajaxUrl, true)
+		request.send()
 		request.onreadystatechange = function () {
 			//todo va bien 
 			if (request.readyState == 4 && request.status == 200) {
@@ -146,6 +146,7 @@ function fntViewUnidad() {
 			}
 		}
 	}else{
+		//si la pagina esta desde unidad en mantenimiento
 		//listar unidades en mantenimiento status 1 no repetias en el select
 		let ajaxUrl = base_url + "Flota/selectUnidadMantenimiento";
 		//creamos el objeto para os navegadores
@@ -161,16 +162,14 @@ function fntViewUnidad() {
 				$("#listUndMant").selectpicker('render')
 			}
 		}
-		/*************************
-		 * obtener valor del selec y cargar informacion de la unidad
-		 ************************/
+		/******************obtener valor del selec y cargar informacion de la unidad************************/
 		let select = document.querySelector('#listUndMant')
 		select.addEventListener('change',
 		function(){
 			var selectedOption = this.options[select.selectedIndex]
 			// alert(selectedOption.value + ': ' + selectedOption.text);
-			//listar unidades en mantenimiento
-			let ajaxUrl = base_url + "Flota/getUnidadMant/ " + selectedOption.value
+			//listar unidad en mantenimiento historial
+			let ajaxUrl = base_url + "Flota/getUnidadMantH/ " + selectedOption.value
 			//creamos el objeto para os navegadores
 			var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
 			//abrimos la conexion y enviamos los parametros para la peticion
@@ -178,13 +177,22 @@ function fntViewUnidad() {
 			request.send();
 			request.onreadystatechange = function () { 
 				if (request.readyState == 4 && request.status == 200) {
+					/*****mostrar el historial de la unidad seleccionada en el select******/
 					document.querySelector('.historial').innerHTML = request.responseText;
 				}
 			}
 		})
 	}
 }
+/**********funcion salir del mantenimiento*********************/
+if(document.querySelector("#btnSalirMAnt")){
 
+	let btnSalirMAnt = document.querySelector("#btnSalirMAnt")
+	btnSalirMAnt.addEventListener('click', function(){
+	
+		alert("preparar la consulta");
+	})
+}
 
 window.addEventListener('load', function () {
 	fntViewUnidad()

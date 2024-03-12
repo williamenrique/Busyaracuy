@@ -53,9 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		"order": [[0, "asc"]]
 	});
 
-	/****************NUEVA UNIDAD **********************
-	funcion para capturar los daros de un nuevo rol *
-	************************************************/
+	/****************NUEVA UNIDAD *******************/
 	let formUnidad = document.querySelector('#formUnidad');
 	formUnidad.onsubmit = function (e) {
 		e.preventDefault();
@@ -106,9 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
 window.addEventListener('load', function () {
 	fntModelos();
 },false)
-/*************************
- * funcion para obtener los modelos y cargarlos en los select
- ************************/
+/***************funcion para obtener los modelos y cargarlos en los select ************************/
 function fntModelos() {
 	if (document.querySelector('#listModelo')) {
 		let ajaxUrl = base_url + "Flota/getSelectModelo";
@@ -128,9 +124,7 @@ function fntModelos() {
 
 	}
 }
-/***
- * funcion cambiar el estado de la unidad
- */
+/****************funcion cambiar el estado de la unidad***********/
 function fntStatus(status,idUnidad){
 	//obtenemos el valor del atributo individual
 	var status = status;
