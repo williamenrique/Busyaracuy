@@ -40,7 +40,7 @@ class Flota extends Controllers{
 			if ($arrData[$i]['status_unidad'] == 4) {
 				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-warning" onClick="fntStatus(1,'.$arrData[$i]['id_flota'].')">A desincorporar</a>';
 			}
-			$arrData[$i]['id_unidad'] ='<a href=flota/unidad_mant/?unidad='.$arrData[$i]['id_flota'].' title="Ver">'.$arrData[$i]['id_unidad'].'</a>';
+			$arrData[$i]['id_unidad'] ='<a href=flota/unidad/?unidad='.$arrData[$i]['id_flota'].' title="Ver">'.$arrData[$i]['id_unidad'].'</a>';
 		}
 		//convertir el arreglo de datos en un formato json
 		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
@@ -125,7 +125,6 @@ class Flota extends Controllers{
 		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
-	
 	/*********
 	 * //invocar la vista con views y usamos getView y pasamos parametros esta clase y la vista
 		//incluimos un arreglo que contendra toda la informacion que se enviara al home
@@ -334,6 +333,40 @@ class Flota extends Controllers{
 			$htmlOptions .= '<option value="0">No hay unidades</option>';
 		}
 		echo $htmlOptions;
+		die();
+	}
+	/*********
+	 * //invocar la vista con views y usamos getView y pasamos parametros esta clase y la vista
+		//incluimos un arreglo que contendra toda la informacion que se enviara al home
+	 */
+	public function unidad(){
+		//invocar la vista con views y usamos getViews y pasamos parametros esta clase y la vista
+		//incluimos un arreglo que contendra toda la informacion que se enviara al home
+		$data['page_title'] = "Unidad";
+		$data['page_userImg'] = "usuario/default.png";
+		$data['page_tag'] = "Unidad";
+		$data['page_userNomb'] = "William Enrique";
+		$data['page_userRol'] = "Administrador";
+		$data['page_name'] = "unidad";
+
+		$data['page_link'] = "unidad";
+		$data['page_menu_open'] = "unidad-menu";
+		$data['page_link_acitvo'] = "link-unidad";
+		$data['page_functions'] = "function.unidad.js";
+		$this->views->getViews($this, "unidad", $data);
+	}
+	/************obtener informacion de la unidad y mostrarla*********************/
+	public function getUnidad(int $idUnidad){
+		$idUnidad = intval($idUnidad);
+		if($idUnidad > 0){
+			$arrData = $this->model->selectUnidadID($idUnidad);
+			if(empty($arrData)){
+				$arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+			}else{
+				$arrResponse = array('status' => true, 'msg' => 'Datos de la unidad');
+			}
+		}
+		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		die();
 	}
 }

@@ -13,6 +13,11 @@ class DashboardModel extends Mysql {
         $request = $this->select_all($sql);
 		return $request;
     }
+    public function getMantenimiento(){
+        $sql = "SELECT * FROM table_unidad_mantenimiento WHERE status_mantenimiento = 1";
+        $request = $this->select_all($sql);
+		return $request;
+    }
     public function getUnidades(){
         $sql = "SELECT * FROM table_flota;";
         $request = $this->select_all($sql);

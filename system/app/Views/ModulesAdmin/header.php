@@ -235,15 +235,12 @@
 								</li>
 							</ul>
 						</li>
-
-
-
-						<li class="nav-item mantenimiento">
-							<a href="<?= base_url()?>flota/mantenimiento" class="nav-link mantenimiento-link">
+						<!-- <li class="nav-item unidad">
+							<a href="<?= base_url()?>flota/unidad" class="nav-link unidad-link">
 								<i class="nav-icon fas fa-th"></i>
-								<p>Item<span class="right badge badge-danger">New</span></p>
+								<p>Unidad<span class="right badge badge-danger">New</span></p>
 							</a>
-						</li>
+						</li> -->
 					</ul>
 				</nav>
 				<!-- /.sidebar-menu -->

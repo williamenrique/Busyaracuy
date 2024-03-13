@@ -71,4 +71,19 @@ class Dashboard extends Controllers{
 		echo $htmlOptions;
 		die();
 	}
+	public function getMantenimiento(){
+		$arrData = $this->model->getMantenimiento();
+		$htmlOptions = '';
+		$mantenimiento = count($arrData);
+		$htmlOptions .= '<div class="inner">
+							<h3>'.$mantenimiento.'</h3>
+							<p>Unidades en mantenimiento</p>
+						</div>
+						<div class="icon">
+							<i class="ion ion-bag"></i>
+						</div>
+						<a href="'.base_url().'flota" class="small-box-footer">Más informacion <i class="fas fa-arrow-circle-right"></i></a>';
+		echo $htmlOptions;
+		die();
+	}
 }

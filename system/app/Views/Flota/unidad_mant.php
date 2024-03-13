@@ -48,7 +48,8 @@
                     <div class="card-header">
                         <input type="hidden" id="idUnidadM" value= "<?php echo $_GET['unidad']?>">
                     </div>
-                    <div class="card-body">
+                    <div class="historial"></div>
+                    <!-- <div class="card-body">
                         <h3 class="card-title accent-light" > <span id="unidad"></span></h3>
                         <h3 class="card-title accent-light" > <span id="marca"></span> - </h3>
                         <h3 class="card-title" > <span id="modelo"></span> - </h3>
@@ -103,7 +104,7 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
+                    </div> -->
                 </div>
                 <?php
                     };
