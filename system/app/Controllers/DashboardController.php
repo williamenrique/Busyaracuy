@@ -56,6 +56,21 @@ class Dashboard extends Controllers{
 		echo $htmlOptions;
 		die();
 	}
+	public function getInoperativo(){
+		$arrData = $this->model->getInoperativo();
+		$htmlOptions = '';
+		$inoperativo = count($arrData);
+		$htmlOptions .= '<div class="inner">
+							<h3>'.$inoperativo.'</h3>
+							<p>Unidades Inoperativas</p>
+						</div>
+						<div class="icon">
+							<i class="ion ion-bag"></i>
+						</div>
+						<a href="'.base_url().'flota" class="small-box-footer">Más informacion <i class="fas fa-arrow-circle-right"></i></a>';
+		echo $htmlOptions;
+		die();
+	}
 	public function getDesincorporado(){
 		$arrData = $this->model->getDesincorporado();
 		$htmlOptions = '';
@@ -84,6 +99,12 @@ class Dashboard extends Controllers{
 						</div>
 						<a href="'.base_url().'flota" class="small-box-footer">Más informacion <i class="fas fa-arrow-circle-right"></i></a>';
 		echo $htmlOptions;
+		die();
+	}
+	/*********contar el estado de la unidad ************/
+	public function getCountUnidadStatus(){
+		$arrData = $this->model->getCountUnidadStatus();
+		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
 		die();
 	}
 }

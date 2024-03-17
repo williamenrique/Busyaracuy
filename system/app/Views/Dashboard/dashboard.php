@@ -27,34 +27,24 @@
 			<div class="row">
 				<div class="col-12">
 					<!-- Default box -->
-					<div class="card">
+					<!-- DONUT CHART -->
+					<div class="card ">
 						<div class="card-header">
-							<h3 class="card-title">Title</h3>
-						</div>
+							<h3 class="card-title">Estadistica de la flota</h3>
 
-						<div class="card-body">
-							<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-
-
-							</ul>
-							<div class="tab-content" id="pills-tabContent">
-								<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-									<?php
-							//	$time = time();
-
-							//	echo date("g:i:s");
-							//dep($_SESSION['userData']);?>
-								</div>
-								<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...
-								</div>
-
+							<div class="card-tools">
+								<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+								</button>
+								<button type="button" class="btn btn-tool" data-card-widget="remove">
+								<i class="fas fa-times"></i>
+								</button>
 							</div>
 						</div>
-						<!-- /.card-body -->
-						<div class="card-footer">
-							Footer
+						<div class="card-body">
+							<canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
 						</div>
-						<!-- /.card-footer-->
+						<!-- /.card-body -->
 					</div>
 					<!-- /.card -->
 				</div>

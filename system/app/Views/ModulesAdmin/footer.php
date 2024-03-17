@@ -37,6 +37,8 @@ if (document.querySelector("." + page_menu_open)) {
 <script src="<?= PLUGINS?>jquery-mousewheel/jquery.mousewheel.js"></script>
 <!-- sweetalert -->
 <script src="<?= PLUGINS?>sweetalert/sweetalert2@10.js"></script>
+<!-- sweetalert -->
+<script src="<?= PLUGINS?>chart/Chart.min.js"></script>
 <!-- datatable js -->
 <script src="<?= PLUGINS?>dataTableB5/js/jquery.dataTables.min.js"></script>
 <script src="<?= PLUGINS?>dataTableB5/js/dataTables.bootstrap5.min.js"></script>
