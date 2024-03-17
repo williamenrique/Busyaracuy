@@ -32,7 +32,7 @@ class Flota extends Controllers{
 				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-success" onClick="fntStatus(1,'.$arrData[$i]['id_flota'].')">Operativo</a>';
 			}
 			if ($arrData[$i]['status_unidad'] == 2) {
-				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-warning" onClick="fntStatus(2,'.$arrData[$i]['id_flota'].')">Mantenimiento</a>';
+				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-warning">Mantenimiento</a>';
 			}
 			if ($arrData[$i]['status_unidad'] == 3) {
 				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-info" onClick="fntStatus(3,'.$arrData[$i]['id_flota'].')">Inoperativo</a>';

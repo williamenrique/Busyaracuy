@@ -135,8 +135,8 @@ function fntStatus(status,idUnidad){
 			resolve({
 				'1': 'Operativo',
 				'0': 'Desincorporado',
-				'2': 'Inoperativo',
-				'4': 'A desincorporar'
+				'3': 'Inoperativo',
+				'4': 'Critico'
 			})
 			}, 1000)
 		})
