@@ -82,7 +82,7 @@ class Roles extends Controllers{
 	 ***************************************/
 	public function setRol(){
 		//almacenar los datos en variables
-	 	$strRol = $_POST["txtnombre"];
+		$strRol = $_POST["txtnombre"];
 		$strDescripcion = $_POST['txtdescripcion'];
 		$intIdRol = intVal($_POST['idRol']);
 		if($strRol == ""){

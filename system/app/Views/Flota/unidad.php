@@ -26,17 +26,16 @@
 			<div class="row">
 				<div class="col-12">
 					<!-- Default box -->
-					<div class="card">
-						<div class="card-header">
+					<div class="historia">
+						<!-- <div class="card-header">
 							<h3 class="card-title">Informacion de la unidad</h3>
                             <h3 class="card-title accent-light" > <span id="unidad"></span></h3>
                             <h3 class="card-title accent-light" > <span id="marca"></span> - </h3>
                             <h3 class="card-title" > <span id="modelo"></span> - </h3>
                             <h3 class="card-title" > <span id="vim"></span></h3>
-						</div>
-
+						</div> -->
                         <input type="hidden" value="<?= $_GET['unidad']?>" id="idGetUnidad">
-                        <div class="card-body">
+                        <!-- <div class="card-body">
                             <form id="formUndMant">
                                 <div class="form-row align-items-center">
                                     <div class="col-sm-2 my-1">
@@ -87,7 +86,7 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
+                        </div> -->
 						<!-- /.card-body -->
 						<!-- <div class="card-footer">
 							Footer

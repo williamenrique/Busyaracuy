@@ -38,7 +38,7 @@ class Flota extends Controllers{
 				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-info" onClick="fntStatus(3,'.$arrData[$i]['id_flota'].')">Inoperativo</a>';
 			}
 			if ($arrData[$i]['status_unidad'] == 4) {
-				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-warning" onClick="fntStatus(4,'.$arrData[$i]['id_flota'].')">Critca</a>';
+				$arrData[$i]['status_unidad'] = '<a style="font-size: 15px; cursor:pointer" class="badge badge-danger" onClick="fntStatus(4,'.$arrData[$i]['id_flota'].')">Critca</a>';
 			}
 			$arrData[$i]['id_unidad'] ='<a href=flota/unidad/?unidad='.$arrData[$i]['id_flota'].' title="Ver">'.$arrData[$i]['id_unidad'].'</a>';
 		}
@@ -182,6 +182,7 @@ class Flota extends Controllers{
 			$request_ingreso = $this->model->setIMantenimiento($srtListUnidad,$srtRutaUnidad,$srtOperador,$srtMecanico,$srtKilometraje,$srtRadioTipo,$srtFechaEntrada,$srtHoraEntrada,$srtDiagnostico,$srtRecomendacion);
 			if($request_ingreso > 0 ){
 				$arrResponse = array('status'=> true,'msg' => 'Unidad en mantenimiento');
+				$request_status = $this->model->statusUnidad($srtListUnidad,2);
 			}else{
 				$arrResponse = array('status'=> false,'msg' => 'Ah ocurrido un error');
 			}
@@ -218,7 +219,7 @@ class Flota extends Controllers{
 	}
 	/************funcion traer unidad en mantenimiento al activar el select para historial********************/
 	/*revisar cuando veo una unidad en mantenimiento*/
-	public function getUnidadMant(int $idFlota){
+	public function getUnidadMantH(int $idFlota){
 		$idFlota = intval($idFlota);
 		if($idFlota > 0){
 			$arrData = $this->model->selectUnidadHM($idFlota);
@@ -335,6 +336,124 @@ class Flota extends Controllers{
 		echo $htmlOptions;
 		die();
 	}
+	/************obtener informacion de la unidad y mostrarla*********************/
+	public function getUnidadMant(int $idUnidad){
+		$idUnidad = intval($idUnidad);
+		if($idUnidad > 0){
+			//obtener la info de la flota
+			$arrData = $this->model->selectUnidadID($idUnidad);
+			if(empty($arrData)){
+				$arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+			}else{
+				//si el estatus es 2 de mantenimiento traer toda la info desde las dos tablas
+				// $arrResponse = array('status' => true, 'msg' => 'Datos de la unidad');
+				$htmlOptions = "";
+			
+					$arrDataMantenimiento = $this->model->selectUnidadM($idUnidad);
+									// [id_flota] => 1
+									// [id_unidad] => BY-02
+									// [marca_unidad] => YUTONG
+									// [modelo_unidad] => ZK6896HGA
+									// [vim_unidad] => LZYTDGD6XE1000716
+									// [fecha_creacion] => 2014
+									// [cap_pasajero] => 25
+									// [tipo_combustible] => Diesel
+									// [status_unidad] => 2
+									// [id_unidad_mantenimiento] => 1
+									// [ruta_unidad] => lara
+									// [operardor_unidad] => jose
+									// [nomb_mecanico] => charlie
+									// [km_unidad] => 1000
+									// [tipo_mantenimiento] => p
+									// [diagnostico] => sonido en motor
+									// [recomendacion] => cambiar motor
+									// [fecha_entrada] => 2024-03-08/10:00
+									// [fecha_salida] => 
+									// [status_mantenimiento] => 1
+					
+						$htmlOptions .= '
+								<div class="card ">
+									<div class="card-header">
+										<h3 class="card-title mr-2 accent-light" > <span id="unidad">'.$arrDataMantenimiento['id_unidad'].'</span></h3>
+										<h3 class="card-title mr-2 accent-light" > <span id="marca">'.$arrDataMantenimiento['marca_unidad'].'</span>  </h3>
+										<h3 class="card-title mr-2" > <span id="modelo">'.$arrDataMantenimiento['vim_unidad'].'</span>  </h3>
+										<h3 class="card-title mr-2" > <span id="vim">'.$arrDataMantenimiento['modelo_unidad'].'</span></h3>
+									</div>
+									<div class="card-body">
+										<form id="formUndMant">
+										<input type="hidden" class="form-control" id="txtIdFlota"  name="txtIdFlota"  value="'.$arrDataMantenimiento['id_flota'].'"></input>
+											<div class="form-row align-items-center">
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">ENTRADA</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['fecha_entrada'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">OPERADOR</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['operardor_unidad'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">MECANICO</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['nomb_mecanico'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">Combustible</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['tipo_combustible'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">KM</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['km_unidad'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">RUTA</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['ruta_unidad'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">CAPACIDAD</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['cap_pasajero'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">AÑO</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['fecha_creacion'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName"></label>
+													
+												</div>
+												<div class="row">
+													<div class="col-sm-6 my-1">
+														<label class="" for="floatingTextarea2">Diagnostico</label>
+														<input type="text" class="form-control" disabled   value="'.$arrDataMantenimiento['diagnostico'].'"></input>
+													</div>
+													<div class="col-sm-6 my-1">
+														<label class="" for="floatingTextarea2">Recomendacion</label>
+														<input type="text" class="form-control" disabled  value="'.$arrDataMantenimiento['recomendacion'].'"></input>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-2 my-1">
+														<label class="" for="floatingTextarea2">FECHA SALIDA</label>
+														<input type="date" class="form-control" id="txtFechaSalida" name="txtFechaSalida" ></input>
+													</div>
+													<div class="col-sm-2 my-1">
+														<label class="" for="floatingTextarea2">HORA SALIDA</label>
+														<input type="text" class="form-control" id="txtHoraSalida" name="txtHoraSalida" ></input>
+													</div>
+												</div>
+												<button type="button" id="btnFunctionSalirMAnt" onclick="fntSalirMant('.$arrDataMantenimiento['id_flota'].')" class="btn btn-primary btn-sm my-2">
+													</i><span id="btnText">Salir del mantenimiento</span>
+												</button>
+											</div>
+										</form>
+									</div>
+								</div>
+								';
+					
+				
+			}
+			echo $htmlOptions;
+			die();
+		}
+	}
 	/*********
 	 * //invocar la vista con views y usamos getView y pasamos parametros esta clase y la vista
 		//incluimos un arreglo que contendra toda la informacion que se enviara al home
@@ -359,11 +478,143 @@ class Flota extends Controllers{
 	public function getUnidad(int $idUnidad){
 		$idUnidad = intval($idUnidad);
 		if($idUnidad > 0){
+			//obtener la info de la flota
 			$arrData = $this->model->selectUnidadID($idUnidad);
 			if(empty($arrData)){
 				$arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
 			}else{
-				$arrResponse = array('status' => true, 'msg' => 'Datos de la unidad');
+				//si el estatus es 2 de mantenimiento traer toda la info desde las dos tablas
+				// $arrResponse = array('status' => true, 'msg' => 'Datos de la unidad');
+				$htmlOptions = "";
+				if($arrData['status_unidad'] == 2){
+					$arrDataMantenimiento = $this->model->selectUnidadM($idUnidad);
+									// [id_flota] => 1
+									// [id_unidad] => BY-02
+									// [marca_unidad] => YUTONG
+									// [modelo_unidad] => ZK6896HGA
+									// [vim_unidad] => LZYTDGD6XE1000716
+									// [fecha_creacion] => 2014
+									// [cap_pasajero] => 25
+									// [tipo_combustible] => Diesel
+									// [status_unidad] => 2
+									// [id_unidad_mantenimiento] => 1
+									// [ruta_unidad] => lara
+									// [operardor_unidad] => jose
+									// [nomb_mecanico] => charlie
+									// [km_unidad] => 1000
+									// [tipo_mantenimiento] => p
+									// [diagnostico] => sonido en motor
+									// [recomendacion] => cambiar motor
+									// [fecha_entrada] => 2024-03-08/10:00
+									// [fecha_salida] => 
+									// [status_mantenimiento] => 1
+					
+						$htmlOptions .= '
+								<div class="card ">
+									<div class="card-header">
+										<h3 class="card-title mr-2 accent-light" > <span id="unidad">'.$arrDataMantenimiento['id_unidad'].'</span></h3>
+										<h3 class="card-title mr-2 accent-light" > <span id="marca">'.$arrDataMantenimiento['marca_unidad'].'</span>  </h3>
+										<h3 class="card-title mr-2" > <span id="modelo">'.$arrDataMantenimiento['vim_unidad'].'</span>  </h3>
+										<h3 class="card-title mr-2" > <span id="vim">'.$arrDataMantenimiento['modelo_unidad'].'</span></h3>
+									</div>
+									<div class="card-body">
+										<form id="formUndMant">
+											<input type="hidden" class="form-control" id="txtIdFlota"  name="txtIdFlota"  value="'.$arrDataMantenimiento['id_flota'].'"></input>
+											<div class="form-row align-items-center">
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">ENTRADA</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['fecha_entrada'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">OPERADOR</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['operardor_unidad'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">MECANICO</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['nomb_mecanico'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">Combustible</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['tipo_combustible'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">KM</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['km_unidad'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">RUTA</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['ruta_unidad'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">CAPACIDAD</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['cap_pasajero'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName">AÑO</label>
+													<input type="text" class="form-control" disabled value="'.$arrDataMantenimiento['fecha_creacion'].'">
+												</div>
+												<div class="col-sm-2 my-1">
+													<label class="" for="inlineFormInputName"></label>
+													
+												</div>
+												<div class="row">
+													<div class="col-sm-6 my-1">
+														<label class="" for="floatingTextarea2">DiaDIAGNOSTICO</label>
+														<input type="text" class="form-control" disabled   value="'.$arrDataMantenimiento['diagnostico'].'"></input>
+													</div>
+													<div class="col-sm-6 my-1">
+														<label class="" for="floatingTextarea2">RECOMENDACION</label>
+														<input type="text" class="form-control" disabled  value="'.$arrDataMantenimiento['recomendacion'].'"></input>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-2 my-1">
+														<label class="" for="floatingTextarea2">FECHA SALIDA</label>
+														<input type="date" class="form-control" id="txtFechaSalida" name="txtFechaSalida" ></input>
+													</div>
+													<div class="col-sm-2 my-1">
+														<label class="" for="floatingTextarea2">HORA SALIDA</label>
+														<input type="text" class="form-control" id="txtHoraSalida" name="txtHoraSalida" ></input>
+													</div>
+												</div>
+												
+												<button type="button" id="btnFunctionSalirMAnt" onclick="fntSalirMant('.$arrDataMantenimiento['id_flota'].')" class="btn btn-primary btn-sm my-2">
+													</i><span id="btnText">Salir del mantenimiento</span>
+												</button>
+											</div>
+										</form>
+									</div>
+								</div>
+								';
+					
+				}else{
+					// $arrData = $this->model->selectUnidadM($idUnidad);
+					$htmlOptions .= "<div class='card'>
+										<h5 class='text-center'>No hay data</h5>
+									</div>";
+					// for ($i=0; $i < count($arrData) ; $i++) {
+						
+					// }
+				}
+			}
+			echo $htmlOptions;
+			die();
+		}
+	}
+	/************sacar unidad de mantenimiento*********************/
+	public function setSalirMantenimiento(){
+		$strIdFlota = $_POST["txtIdFlota"];
+		$strFechaSalida = $_POST["txtFechaSalida"];
+		$strHoraSalida = $_POST["txtHoraSalida"];
+		$srtSalida = $strFechaSalida.'/'.$strHoraSalida;
+		if($strFechaSalida == "" || $strHoraSalida == ""){
+			$arrResponse = array('status'=> false,'msg' => 'Debe llenar fecha y hora');
+		}else{
+			$requestStatus = $this->model->setSalirMantenimiento($strIdFlota,$srtSalida);
+			if($requestStatus){
+				$arrResponse = array('status'=> true,'msg' => 'Puede seguir.');
+			}else{
+				$arrResponse = array('status'=> false,'msg' => 'Ah ocurrido un error.');
 			}
 		}
 		echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);

@@ -17,34 +17,44 @@ function fntViewUnidad() {
 			//todo va bien 
 			if (request.readyState == 4 && request.status == 200) {
 				//creamos el objeto de los datos obtenidos del controlador
-				var objData = JSON.parse(request.responseText);
-                if (objData.status) {
-                    Swal.fire('info', objData.msg)
-					// 	document.querySelector("#unidad").innerHTML = objData.data.id_unidad
-				// 	document.querySelector("#unidad").innerHTML = objData.data.id_unidad
-				// 	document.querySelector("#vim").innerHTML = objData.data.vim_unidad
-				// 	document.querySelector("#modelo").innerHTML = objData.data.modelo_unidad
-				// 	document.querySelector("#txtRutaUnidad").value = objData.data.ruta_unidad
-				// 	document.querySelector("#txtFechaEntrada").value = objData.data.fecha_entrada
-				// 	document.querySelector("#txtOperador").value = objData.data.operardor_unidad
-				// 	document.querySelector("#txtMecanico").value = objData.data.nomb_mecanico
-				// 	document.querySelector("#txtCombustible").value = objData.data.tipo_combustible
-				// 	document.querySelector("#txtKM").value = objData.data.km_unidad
-				// 	document.querySelector("#txtDiagnostico").value = objData.data.diagnostico
-				// 	document.querySelector("#txtRecomendacion").value = objData.data.recomendacion
-				// 	document.querySelector("#txtCapacidad").value = objData.data.cap_pasajero
-				// 	document.querySelector("#txtCreacion").value = objData.data.fecha_creacion
-				// 	if(objData.data.tipo_mantenimiento == "c"){
-				// 		document.querySelector("#tipoMant").innerHTML = '<span class="badge badge-info">CORRECTIVO</span>'
-				// 	}else{
-				// 		document.querySelector("#tipoMant").innerHTML = '<span class="badge badge-info">PREVENTIVO</span>'
-				// 	}
-                } else {
-                    Swal.fire('error', objData.msg)
-                }
+				document.querySelector('.historia').innerHTML = request.responseText;
+				// var objData = JSON.parse(request.responseText);
+                // if (objData.status) {
+                //     Swal.fire('info', objData.msg)
+	
+                // } else {
+                //     Swal.fire('error', objData.msg)
+                // }
             }
         }
     }
+}
+/************salir de unidad en mantenimiento************************/
+function fntSalirMant(idFlota){
+	let formUndMant = document.querySelector('#formUndMant')
+	let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+	let ajaxUrl = base_url + 'Flota/setSalirMantenimiento'
+	//creamos un objeto del formulario con los datos haciendo referencia a formData
+	let formData = new FormData(formUndMant); 
+	//prepara los datos por ajax preparando el dom
+	request.open('POST', ajaxUrl, true);
+	//envio de datos del formulario que se almacena enla variable
+	request.send(formData);
+	//despues del envio retornamos una funcion con los datos
+	request.onreadystatechange = function () {
+		//validamos la respuesta del servidor al enviar los datos
+		if (request.readyState == 4 && request.status == 200) {
+			//obtener el json y convertirlo a un objeto en javascript
+			var objData = JSON.parse(request.responseText);
+			//condionamos la respuesta del array del controlador
+			if (objData.status) {
+				// formUndMant.reset();
+				notifi(objData.msg, 'success');
+			} else {
+				notifi(objData.msg, 'error');
+			}
+		}
+	}
 }
 window.addEventListener('load', function () {
 	fntViewUnidad()
