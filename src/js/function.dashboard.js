@@ -107,7 +107,7 @@ $(function () {
 		mantenimiento = content[2].status / totalFlota * 100
 		inoperativa =content[3].status / totalFlota * 100
 		critica =  content[0].status / totalFlota * 100
-		desincorporada =  content[4].status / totalFlota * 100
+		// desincorporada =  content[4].status / totalFlota * 100
 		console.log(operativa.toFixed(2))
 		var donutData        = {
 			labels: [
