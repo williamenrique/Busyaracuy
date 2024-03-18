@@ -184,11 +184,26 @@ function fntViewUnidad() {
 				}
 			}
 		})
+
+		//listar unidades que estuvieron en  mantenimiento en el select
+		let ajaxUrlH = base_url + "Flota/selectUnidadHistorial";
+		//creamos el objeto para os navegadores
+		var request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+		//abrimos la conexion y enviamos los parametros para la peticion
+		request.open("GET", ajaxUrlH, true);
+		request.send();
+		request.onreadystatechange = function () {
+			if (request.readyState == 4 && request.status == 200) {
+				//option obtenidos del controlador
+				document.querySelector('#listUndMantH').innerHTML = request.responseText;
+				//seleccionando el primer option
+				$("#listUndMantH").selectpicker('render')
+			}
+		}
 	}
 }
 /**********funcion salir del mantenimiento*********************/
 if(document.querySelector("#btnSalirMAnt")){
-
 	let btnSalirMAnt = document.querySelector("#btnSalirMAnt")
 	btnSalirMAnt.addEventListener('click', function(){
 	

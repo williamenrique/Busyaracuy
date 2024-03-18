@@ -101,6 +101,12 @@ class FlotaModel extends Mysql {
 		$request = $this->select_all($sql);
 		return $request;
 	}
+	/***************** listar una unidad y su historial***********************/
+	public function selectUnidadMantenimientoH(){
+		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota ";
+		$request = $this->select_all($sql);
+		return $request;
+	}
 	/***************** listar las unidades en mantenimiento no repetidas***********************/
 	public function selectUnidadMantenimiento(){
 		$sql = "SELECT f.*, um.* FROM table_unidad_mantenimiento um INNER JOIN table_flota f ON f.id_flota = um.id_flota WHERE um.status_mantenimiento = 1";

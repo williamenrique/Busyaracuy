@@ -26,20 +26,23 @@
             <?php
             if(empty($_GET['unidad'])){?>
                 <div class="card">
-                    <div class="card-header">
-                        <span>Seleccione una unidad</span>
-                        <div class="form-row align-items-center">
-                            <div class="col-sm-2 my-1">
-                                <select id="listUndMant" data-live-search="true" name="listUndMant" class="form-control"
-                                    data-style="btn-outline-primary" data-size="5">
-                                </select>
-                                
-                            </div>
+                    <div class="card-header row">
+                        <div class="col-md-3">
+                            <label for="inputState" class="form-label">Unidades en mantenimiento</label>
+                            <select id="listUndMant" data-live-search="true" name="listUndMant" class="form-control"
+                                data-style="btn-outline-primary" data-size="5">
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="inputState" class="form-label">Historial unidades</label>
+                            <select id="listUndMantH" data-live-search="true" name="listUndMantH" class="form-control"
+                                data-style="btn-outline-primary" data-size="5">
+                            </select>
                         </div>
                     </div>
                 </div>
 
-                <div class="div historial"></div>
+                <div class="historial"></div>
                 
                     <?php
                     }else{

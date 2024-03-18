@@ -235,23 +235,6 @@ class Flota extends Controllers{
 					}else{
 						$tipoMant  = '<span class="badge badge-info">PREVENTIVO</span>';
 					}
-												/*
-													id_unidad
-													id_unidad
-													vim_unidad
-													modelo_unidad
-													ruta_unidad
-													fecha_entrada
-													operardor_unidad
-													nomb_mecanico
-													tipo_combustible
-													km_unidad
-													diagnostico
-													recomendacion
-													cap_pasajero
-													fecha_creacion
-													*/
-					
 					$htmlOptions .= '
 								<div class="card ">
 									<div class="card-header">
@@ -325,6 +308,21 @@ class Flota extends Controllers{
 	public function selectUnidadMantenimiento(){
 		$htmlOptions = "";
 		$arrData = $this->model->selectFlotaMantenimiento();
+		if(count($arrData) > 0){
+			$htmlOptions .= '<option selected>Seleccione Unidad</option>';
+			for ($i=0; $i < count($arrData); $i++) { 
+				$htmlOptions .= '<option value="'.$arrData[$i]['id_flota'].'">'.$arrData[$i]['id_unidad'].'</option>';
+			}
+		}else{
+			$htmlOptions .= '<option value="0">No hay unidades</option>';
+		}
+		echo $htmlOptions;
+		die();
+	}
+	/************funcion de listar toda la flota en mantenimiento y su historial en el select*********************/
+	public function selectUnidadHistorial(){
+		$htmlOptions = "";
+		$arrData = $this->model->selectUnidadMantenimientoH();
 		if(count($arrData) > 0){
 			$htmlOptions .= '<option selected>Seleccione Unidad</option>';
 			for ($i=0; $i < count($arrData); $i++) { 
